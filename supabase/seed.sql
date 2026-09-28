@@ -1,0 +1,10 @@
+-- Development sample data only. Do not run on a production content database.
+insert into public.games(id,title,slug,description,body,cover_url,genre,development_status,status,sort_order,tags,technologies,screenshots) values
+('11111111-1111-4111-8111-111111111111','ECHOES OF THE VOID','echoes-of-the-void','静寂の向こうに、まだ誰も知らない物語がある。','失われた星の記憶をたどる探索アドベンチャー。これは開発用サンプル作品です。','/art/void.png','探索アドベンチャー','開発中','published',0,array['探索','SF'],array['Unreal Engine 5','Blender'],array['/art/void.png']),
+('22222222-2222-4222-8222-222222222222','AFTERGLOW','afterglow','世界の終わりに、小さな灯りを。','植物と機械が共に生きる庭で、明日を育てる。これは開発用サンプル作品です。','/art/afterglow.png','パズル・探索','プロトタイプ','published',1,array['パズル'],array['Godot','Blender'],array['/art/afterglow.png']) on conflict(slug) do nothing;
+insert into public.posts(title,slug,excerpt,content,cover_url,category,tags,status,published_at) values
+('光と影で、世界の温度をつくる','lighting-the-void','静かな世界に、感情を宿すまで。','{"type":"doc","content":[{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"光を設計する"}]},{"type":"paragraph","content":[{"type":"text","text":"この記事は開発用サンプルです。管理画面から実際の制作記録に置き換えてください。"}]}]}','/art/void.png','アート',array['制作ノート','ライティング'],'published',now()-interval '3 days'),
+('「気持ちいい移動」を、もう一度考える','movement-feel','プレイヤーと世界のつながり。','{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"入力から反応までの一瞬を、繰り返し調整します。この記事はサンプルです。"}]}]}','/art/afterglow.png','開発日誌',array['ゲーム開発'],'published',now()-interval '7 days'),
+('小さなスタジオの、大きな第一歩','hello-world','ゲームづくりの過程を届けます。','{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"はじめまして。このブログではゲーム開発の舞台裏を記録します。この記事はサンプルです。"}]}]}','/art/void.png','スタジオ',array['制作ノート'],'published',now()-interval '10 days'),
+('非公開の開発メモ','private-development-note','RLS確認用','{"type":"doc","content":[]}','', '開発日誌','{}','draft',null),
+('未来のリリースノート','future-release-note','予約公開テスト','{"type":"doc","content":[]}','', '開発日誌','{}','scheduled',now()+interval '1 year') on conflict(slug) do nothing;

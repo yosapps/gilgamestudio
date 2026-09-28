@@ -1,0 +1,61 @@
+\set ON_ERROR_STOP on
+begin;
+insert into auth.users(id) values('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'),('bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb');
+insert into public.admin_users(id) values('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa');
+set local role authenticated;
+select set_config('request.jwt.claim.sub','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',true);
+do $$ begin
+ if not public.is_admin() then raise exception 'admin membership failed';end if;
+ insert into public.posts(title,slug,status,category,tags) values('Secret','test-draft','draft','Hidden category',array['Hidden tag']);
+ insert into public.posts(title,slug,status,published_at) values('Future','test-future','scheduled',now()+interval '1 day'),('Visible','test-visible','published',now()-interval '1 day'),('Due','test-due','scheduled',now()-interval '1 second');
+ update public.posts set title='Updated secret' where slug='test-draft';
+ if (select title from public.posts where slug='test-draft')<>'Updated secret' then raise exception 'update failed';end if;
+ insert into public.games(title,slug,status,screenshots) values('Hidden game','test-hidden-game','draft',array['/art/void.png']),('Visible game','test-visible-game','published',array['/art/void.png']);
+ insert into public.media(path,url,name,mime_type,size,created_by) values('test.webp','https://test.supabase.co/storage/v1/object/public/media/test.webp','test.webp','image/webp',100,'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa');
+ insert into storage.objects(bucket_id,name) values('media','admin-image.webp');
+end $$;
+reset role;
+set local role anon;
+select set_config('request.jwt.claim.sub','',true);
+do $$ declare n integer; begin
+ if public.is_admin() then raise exception 'anonymous is admin';end if;
+ if exists(select 1 from public.posts where slug in ('test-draft','test-future')) then raise exception 'draft or future leaked';end if;
+ if (select count(*) from public.posts where slug in ('test-visible','test-due'))<>2 then raise exception 'published missing';end if;
+ if exists(select 1 from public.games where slug='test-hidden-game') then raise exception 'game draft leaked';end if;
+ if (select count(*) from public.game_images where game_id in(select id from public.games where slug='test-visible-game'))<>1 then raise exception 'image index failed';end if;
+ if (select count(*) from public.game_images)<>1 then raise exception 'draft image leaked';end if;
+ if exists(select 1 from public.post_categories where name='Hidden category') then raise exception 'draft category leaked';end if;
+ if exists(select 1 from public.post_tags where name='Hidden tag') then raise exception 'draft tag leaked';end if;
+ if exists(select 1 from storage.objects) then raise exception 'storage listing leaked';end if;
+ begin insert into public.posts(title,slug) values('Attack','anon-attack');raise exception 'anonymous write allowed';exception when insufficient_privilege then null;end;
+ if not public.consume_contact_limit(repeat('a',64)) then raise exception 'first contact denied';end if;
+ perform public.consume_contact_limit(repeat('a',64));perform public.consume_contact_limit(repeat('a',64));
+ if public.consume_contact_limit(repeat('a',64)) then raise exception 'contact limit missing';end if;
+end $$;
+reset role;
+set local role authenticated;
+select set_config('request.jwt.claim.sub','bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',true);
+do $$ declare n integer;begin
+ if public.is_admin() then raise exception 'nonadmin is admin';end if;
+ if exists(select 1 from public.posts where slug='test-draft') then raise exception 'nonadmin draft leaked';end if;
+ if exists(select 1 from public.media) then raise exception 'nonadmin media listing leaked';end if;
+ begin insert into public.admin_users(id) values(auth.uid());raise exception 'self promotion allowed';exception when insufficient_privilege then null;end;
+ begin insert into public.posts(title,slug) values('Attack','nonadmin-attack');raise exception 'nonadmin insert allowed';exception when insufficient_privilege then null;end;
+ update public.posts set title='Hacked' where slug='test-visible';get diagnostics n=row_count;if n<>0 then raise exception 'nonadmin update allowed';end if;
+ delete from public.games where slug='test-visible-game';get diagnostics n=row_count;if n<>0 then raise exception 'nonadmin delete allowed';end if;
+ begin insert into storage.objects(bucket_id,name) values('media','attack.webp');raise exception 'nonadmin storage write allowed';exception when insufficient_privilege then null;end;
+end $$;
+reset role;
+set local role authenticated;
+select set_config('request.jwt.claim.sub','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',true);
+do $$ begin
+ delete from public.games where slug='test-visible-game';
+ if (select count(*) from public.game_images)<>1 then raise exception 'cascade failed';end if;
+ delete from public.posts where slug='test-draft';
+ if exists(select 1 from public.posts where slug='test-draft') then raise exception 'admin delete failed';end if;
+ update public.site_settings set site_name='Verified Studio' where id=1;
+ if (select site_name from public.site_settings where id=1)<>'Verified Studio' then raise exception 'settings write failed';end if;
+ delete from storage.objects where name='admin-image.webp';
+end $$;
+rollback;
+select 'PASS: anonymous, nonadmin, admin CRUD, publication, taxonomy, media, Storage policies, contact rate limit' as result;

@@ -1,0 +1,21 @@
+services:
+  web:
+    build:
+      context: .
+      target: development
+    ports:
+      - '3000:3000'
+    env_file:
+      - path: .env.local
+        required: false
+    environment:
+      WATCHPACK_POLLING: 'true'
+      NEXT_TELEMETRY_DISABLED: '1'
+    volumes:
+      - .:/app
+      - dependencies:/app/node_modules
+      - nextcache:/app/.next
+    restart: unless-stopped
+volumes:
+  dependencies:
+  nextcache:
