@@ -1,12 +1,14 @@
+import { getTranslator } from '@/lib/locale-server';
 import Link from 'next/link';
-export default function NotFound() {
+export default async function NotFound() {
+  const t = await getTranslator();
   return (
     <main id="main" className="page-wrap empty-state">
       <p className="eyebrow">404 / UNEXPLORED TERRITORY</p>
-      <h1>ここは、まだ未知の世界。</h1>
-      <p>ページが見つからないか、公開されていません。</p>
+      <h1>{t('ここは、まだ未知の世界。')}</h1>
+      <p>{t('ページが見つからないか、公開されていません。')}</p>
       <Link className="button button-primary" href="/">
-        ホームへ戻る
+        {t('ホームへ戻る')}
       </Link>
     </main>
   );

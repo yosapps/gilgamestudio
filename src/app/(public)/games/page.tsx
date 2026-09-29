@@ -1,15 +1,20 @@
+import { getTranslator } from '@/lib/locale-server';
 import { getGames } from '@/lib/data';
 import { GameCard } from '@/components/cards';
 import { ComingSoon } from '@/components/coming-soon';
-export const metadata = {
-  title: 'Games',
-  description: 'Gilgame studioがつくる、小さな発見ときらめく冒険。',
-};
+export async function generateMetadata() {
+  const t = await getTranslator();
+  return {
+    title: 'Games',
+    description: t('Gilgame studioがつくる、小さな発見ときらめく冒険。'),
+  };
+}
 export default async function Games({
   searchParams,
 }: {
   searchParams: Promise<{ genre?: string; status?: string }>;
 }) {
+  const t = await getTranslator();
   const q = await searchParams;
   const all = await getGames();
   const games = all.filter(
@@ -24,28 +29,30 @@ export default async function Games({
         <h1>
           Games<span className="violet">.</span>
         </h1>
-        <p>ひとつのアイデアから、夢中になれる冒険へ。</p>
+        <p>{t('ひとつのアイデアから、夢中になれる冒険へ。')}</p>
       </div>
       <form className="filter-bar">
         <label>
-          ジャンル
+          {t('ジャンル')}
           <select name="genre" defaultValue={q.genre || ''}>
-            <option value="">すべて</option>
+            <option value="">{t('すべて')}</option>
             {[...new Set(all.map((g) => g.genre))].map((v) => (
-              <option key={v}>{v}</option>
+              <option key={v} value={v}>
+                {t(v)}
+              </option>
             ))}
           </select>
         </label>
         <label>
-          開発状況
+          {t('開発状況')}
           <select name="status" defaultValue={q.status || ''}>
-            <option value="">すべて</option>
+            <option value="">{t('すべて')}</option>
             {[...new Set(all.map((g) => g.development_status))].map((v) => (
               <option key={v}>{v}</option>
             ))}
           </select>
         </label>
-        <button className="button button-outline">絞り込む</button>
+        <button className="button button-outline">{t('絞り込む')}</button>
         <span className="muted">{games.length} PROJECTS</span>
       </form>
       <div className="games-grid">
@@ -57,7 +64,9 @@ export default async function Games({
         <ComingSoon />
       ) : (
         !games.length && (
-          <p className="empty-state">条件に一致するゲームはありません。</p>
+          <p className="empty-state">
+            {t('条件に一致するゲームはありません。')}
+          </p>
         )
       )}
     </div>

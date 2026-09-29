@@ -1,3 +1,4 @@
+import { getTranslator } from '@/lib/locale-server';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -15,7 +16,10 @@ import { SectionTitle, ContactCTA } from '@/components/shell';
 import { HeroArt } from '@/components/hero-art';
 import { GameCard, PostCard } from '@/components/cards';
 import { Reveal } from '@/components/reveal';
+import { OfficialX } from '@/components/official-x';
+import { studioBrand } from '@/lib/brand';
 export default async function Home() {
+  const t = await getTranslator();
   const [games, posts, s] = await Promise.all([
     getGames(),
     getPosts(),
@@ -30,21 +34,23 @@ export default async function Home() {
             <Gem size={15} /> A LITTLE STUDIO, A WORLD OF WONDER
           </p>
           <h1>
-            {messages.hero.headline}
+            {t(messages.hero.headline)}
             <br />
-            <span>{messages.hero.accent}</span>
+            <span>{t(messages.hero.accent)}</span>
           </h1>
           <p className="hero-description">
-            見つける楽しさ。できたときのうれしさ。
+            {t('見つける楽しさ。できたときのうれしさ。')}
             <br />
-            ギルガメと一緒に、心はずむ世界をつくっています。
+            {t('ギルガメと一緒に、心はずむ世界をつくっています。')}
           </p>
           <div className="hero-actions">
             <Link className="button button-primary" href="/games">
-              ゲームを探索する <ArrowUpRightIcon />
+              {t('ゲームを探索する')}
+              <ArrowUpRightIcon />
             </Link>
             <Link className="button button-ghost" href="/blog">
-              開発の舞台裏へ <ArrowRight size={17} />
+              {t('開発の舞台裏へ')}
+              <ArrowRight size={17} />
             </Link>
           </div>
         </div>
@@ -69,9 +75,9 @@ export default async function Home() {
         <SectionTitle
           index="01"
           label="OUR LITTLE ADVENTURES"
-          title="ワクワクを、遊べる形に。"
+          title={t('ワクワクを、遊べる形に。')}
           href="/games"
-          linkText="すべてのゲーム"
+          linkText={t('すべてのゲーム')}
         />
         {!games.length ? (
           <ComingSoon />
@@ -90,7 +96,7 @@ export default async function Home() {
           <span className="character-orbit" />
           <Image
             src="/gilgame.png"
-            alt="水色のからだ、金色の甲羅、青いクリスタルが目印のギルガメ"
+            alt={t('水色のからだ、金色の甲羅、青いクリスタルが目印のギルガメ')}
             width={650}
             height={650}
             sizes="(max-width:760px) 85vw, 45vw"
@@ -101,30 +107,31 @@ export default async function Home() {
             <Sparkles size={16} /> MEET YOUR LITTLE COMPANION
           </p>
           <h2 id="meet-gilgame">
-            こんにちは、
+            {t('こんにちは、')}
             <br />
-            ギルガメです。
+            {t('ギルガメです。')}
           </h2>
           <p>
-            きらりと光るクリスタルと、
+            {t('きらりと光るクリスタルと、')}
             <br />
-            笑顔が目印の、小さな相棒。
+            {t('笑顔が目印の、小さな相棒。')}
           </p>
           <p>
-            新しい世界への一歩は、いつだってドキドキ。
+            {t('新しい世界への一歩は、いつだってドキドキ。')}
             <br />
-            その先にある発見を、一緒に楽しもう。
+            {t('その先にある発見を、一緒に楽しもう。')}
           </p>
           <div className="character-traits">
             <span>
-              <Gem size={16} /> きらめく好奇心
+              <Gem size={16} /> {t('きらめく好奇心')}
             </span>
             <span>
-              <Heart size={16} /> 笑顔になる冒険
+              <Heart size={16} /> {t('笑顔になる冒険')}
             </span>
           </div>
           <Link href="/about" className="text-link">
-            ギルガメとスタジオを知る <ArrowRight size={18} />
+            {t('ギルガメとスタジオを知る')}
+            <ArrowRight size={18} />
           </Link>
         </div>
       </section>
@@ -132,9 +139,9 @@ export default async function Home() {
         <SectionTitle
           index="02"
           label="DEVELOPMENT JOURNAL"
-          title="冒険の、その舞台裏。"
+          title={t('冒険の、その舞台裏。')}
           href="/blog"
-          linkText="すべての記事"
+          linkText={t('すべての記事')}
         />
         {!posts.length ? (
           <ComingSoon kind="journal" />
@@ -152,30 +159,32 @@ export default async function Home() {
             <span>03</span> THE HEART OF THE STUDIO
           </p>
           <h2>
-            小さくつくって、
+            {t('小さくつくって、')}
             <br />
-            大きくときめく。
+            {t('大きくときめく。')}
           </h2>
           <Link href="/about" className="text-link">
-            開発者について <ArrowRight size={18} />
+            {t('開発者について')}
+            <ArrowRight size={18} />
           </Link>
         </div>
         <div>
-          <p className="about-text">{s.profile}</p>
+          <p className="about-text">{t(s.profile)}</p>
           <div className="tool-list">
             <span>
-              <Code2 /> まずは、つくって試してみる
+              <Code2 /> {t('まずは、つくって試してみる')}
             </span>
             <span>
-              <Gem /> 小さな発見を、大切にする
+              <Gem /> {t('小さな発見を、大切にする')}
             </span>
             <span>
-              <Heart /> また会いたくなる世界をつくる
+              <Heart /> {t('また会いたくなる世界をつくる')}
             </span>
           </div>
           <p className="muted">Unreal Engine · Godot · Blender · TypeScript</p>
         </div>
       </section>
+      <OfficialX />
       <ContactCTA />
       <script
         type="application/ld+json"
@@ -185,7 +194,8 @@ export default async function Home() {
             '@type': 'Organization',
             name: s.site_name,
             url: siteUrl(),
-            description: s.description,
+            description: t(s.description),
+            sameAs: [studioBrand.x.url],
           }).replace(/</g, '\\u003c'),
         }}
       />

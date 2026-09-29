@@ -5,4 +5,8 @@ export const studioBrand = {
   profile:
     'Gilgame studioは、小さな「やってみたい」をゲームにする個人開発スタジオです。水色のからだと金色の甲羅、額にきらめくクリスタルが目印の「ギルガメ」と一緒に、発見する楽しさ、できたときのうれしさ、また会いたくなる世界を大切につくっています。',
   ogImage: '/logo.png',
+  x: {
+    handle: '@gilgamestudio',
+    url: 'https://x.com/gilgamestudio',
+  },
 };

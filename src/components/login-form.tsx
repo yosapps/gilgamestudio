@@ -1,13 +1,16 @@
 'use client';
+import { useTranslator } from '@/components/language-provider';
+
 import { useActionState } from 'react';
 import { login } from '@/app/login/actions';
 import { Button } from './ui/button';
 export function LoginForm({ enabled }: { enabled: boolean }) {
+  const t = useTranslator();
   const [state, action, pending] = useActionState(login, { error: '' });
   return (
     <form action={action} className="form-stack">
       <label>
-        メールアドレス
+        {t('メールアドレス')}
         <input
           name="email"
           type="email"
@@ -17,7 +20,7 @@ export function LoginForm({ enabled }: { enabled: boolean }) {
         />
       </label>
       <label>
-        パスワード
+        {t('パスワード')}
         <input
           name="password"
           type="password"
@@ -28,11 +31,11 @@ export function LoginForm({ enabled }: { enabled: boolean }) {
       </label>
       {state.error && (
         <p role="alert" className="notice error">
-          {state.error}
+          {t(state.error)}
         </p>
       )}
       <Button disabled={pending || !enabled}>
-        {pending ? 'ログイン中…' : 'ログイン'}
+        {pending ? t('ログイン中…') : t('ログイン')}
       </Button>
     </form>
   );

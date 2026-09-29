@@ -1,4 +1,6 @@
 'use client';
+import { useTranslator } from '@/components/language-provider';
+
 import dynamic from 'next/dynamic';
 import { Component, useRef, type ReactNode } from 'react';
 import { useInView } from 'motion/react';
@@ -17,6 +19,7 @@ class Boundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   }
 }
 export function HeroArt() {
+  const t = useTranslator();
   const ref = useRef<HTMLDivElement>(null);
   const visible = useInView(ref, { margin: '100px' });
   return (
@@ -24,7 +27,7 @@ export function HeroArt() {
       <div className="hero-halo" aria-hidden="true" />
       <Image
         src="/gilgame.png"
-        alt="手を振って迎える、水色のカメのキャラクター「ギルガメ」"
+        alt={t('手を振って迎える、水色のカメのキャラクター「ギルガメ」')}
         fill
         priority
         className="hero-character"
@@ -34,7 +37,8 @@ export function HeroArt() {
         <Scene active={visible} />
       </Boundary>
       <span className="character-hello">
-        こんにちは、ギルガメです。<span>LET’S GO ON AN ADVENTURE!</span>
+        {t('こんにちは、ギルガメです。')}
+        <span>LET’S GO ON AN ADVENTURE!</span>
       </span>
       <span className="art-coordinate">YOUR LITTLE COMPANION / GILGAME</span>
     </div>

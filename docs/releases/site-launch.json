@@ -1,0 +1,205 @@
+{
+  "title": "Gilgame studio 公式サイトを公開しました",
+  "slug": "official-website-launch",
+  "excerpt": "小さな一歩から、きらめく冒険へ。個人ゲーム開発スタジオ「Gilgame studio」の公式サイトがオープンしました。作品づくりの歩みやお知らせを、この場所からお届けしていきます。",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "はじめまして、Gilgame studioです"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "公式サイトへようこそ。Gilgame studioは、小さな「やってみたい」をゲームにする個人開発スタジオです。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "発見する楽しさ、できたときのうれしさ、また会いたくなる世界。そんな体験を大切にしながら、思わず笑顔になるゲームづくりに取り組んでいます。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "今回、その活動をお伝えする場所として、公式サイトを公開しました。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "ギルガメと一緒に、新しい一歩を"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "サイトで皆さんをお迎えするのは、水色のからだと金色の甲羅、額の青いクリスタルが目印の「ギルガメ」です。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "白と水色を基調に、クリスタルの青ときらめく金色を添えたサイトには、これから始まる小さな冒険への思いを込めました。ギルガメと一緒に、気軽にのぞいてもらえる場所に育てていきたいと思っています。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "このサイトでお届けすること"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Games：制作するゲームの紹介や、作品に関する情報を掲載していきます。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Journal：開発の進捗、制作中に考えたこと、スタジオからのお知らせをお届けします。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "About：スタジオの紹介と、ゲームづくりで大切にしていることをご案内します。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "作品の紹介は、これから少しずつ準備していきます。まずはこの最初のお知らせから、ものづくりの歩みを残していきます。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "これから、どうぞよろしくお願いします"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "まだ小さなスタートですが、一つひとつの発見を大切に、作品とこのサイトを育てていきます。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "ふと思い出したときに、また遊びに来てもらえたらうれしいです。ギルガメとGilgame studioを、どうぞよろしくお願いします。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "公式サイトを見る",
+            "marks": [
+              {
+                "type": "link",
+                "attrs": {
+                  "href": "https://www.gilgamestudio.com/"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cover_url": "https://pukwcqpzgcrfcfbbucmz.supabase.co/storage/v1/object/public/media/announcements/site-launch-1790644884157.webp",
+  "category": "お知らせ",
+  "tags": [
+    "サイト公開",
+    "Gilgame studio",
+    "ギルガメ"
+  ],
+  "status": "published",
+  "published_at": "2026-09-29T01:22:10.792+00:00",
+  "seo_title": "Gilgame studio 公式サイトを公開しました",
+  "seo_description": "個人ゲーム開発スタジオ「Gilgame studio」の公式サイトがオープン。ギルガメとともに、ゲームの紹介や開発の歩み、スタジオからのお知らせをお届けします。"
+}

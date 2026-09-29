@@ -1,4 +1,4 @@
-/** UI dictionaries are separate from CMS content; add `en` before introducing /[locale]. */
+/** Base UI copy. Request-specific English copy is maintained in translations.ts. */
 export const defaultLocale = 'ja' as const;
 export const dictionaries = {
   ja: {

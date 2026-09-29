@@ -1,17 +1,22 @@
+import { getTranslator } from '@/lib/locale-server';
 import { messages } from '@/lib/i18n';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight, Gem } from 'lucide-react';
 import Image from 'next/image';
 import { getSettings } from '@/lib/data';
 import { configured } from '@/lib/supabase';
+import { studioBrand } from '@/lib/brand';
+import { XIcon } from '@/components/official-x';
+import { LanguageSwitcher } from '@/components/language-switcher';
 export async function Header() {
+  const t = await getTranslator();
   const settings = await getSettings();
   return (
     <header className="site-header">
       <Link
         className="brand"
         href="/"
-        aria-label={`${settings.site_name} ホーム`}
+        aria-label={`${settings.site_name} ${t('ホーム')}`}
       >
         <Image
           className="brand-logo"
@@ -26,7 +31,7 @@ export async function Header() {
           <small>SMALL STEPS. SPARKLING ADVENTURES.</small>
         </span>
       </Link>
-      <nav aria-label="メインナビゲーション">
+      <nav aria-label={t('メインナビゲーション')}>
         <Link href="/games">{messages.navigation.games}</Link>
         <Link href="/blog">{messages.navigation.journal}</Link>
         <Link href="/about">{messages.navigation.about}</Link>
@@ -34,10 +39,12 @@ export async function Header() {
           Contact <ArrowUpRight size={15} />
         </Link>
       </nav>
+      <LanguageSwitcher />
     </header>
   );
 }
 export async function Footer() {
+  const t = await getTranslator();
   const s = await getSettings();
   return (
     <footer className="footer">
@@ -52,35 +59,51 @@ export async function Footer() {
           />
           {s.site_name}
         </Link>
-        <p>{messages.footer}</p>
+        <p>{t(messages.footer)}</p>
       </div>
       <div className="footer-links">
         <Link href="/games">{messages.navigation.games}</Link>
         <Link href="/blog">{messages.navigation.journal}</Link>
         <Link href="/about">{messages.navigation.about}</Link>
         <Link href="/contact">{messages.navigation.contact}</Link>
-        {s.social_links.map((l) => (
-          <a
-            href={l.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            key={l.label}
-          >
-            {l.label}
-            <ArrowUpRight size={14} />
-          </a>
-        ))}
+        <a
+          href={studioBrand.x.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${t('公式X')} ${studioBrand.x.handle} (${t('新しいタブで開きます')})`}
+        >
+          <XIcon /> {t('公式X')}
+          <ArrowUpRight size={14} aria-hidden="true" />
+        </a>
+        {s.social_links
+          .filter(
+            (l) =>
+              !/^https?:\/\/(?:www\.)?(?:x\.com|twitter\.com)\/gilgamestudio\/?(?:[?#].*)?$/i.test(
+                l.url,
+              ),
+          )
+          .map((l) => (
+            <a
+              href={l.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              key={l.label}
+            >
+              {l.label}
+              <ArrowUpRight size={14} />
+            </a>
+          ))}
       </div>
       <div className="footer-bottom">
         <span>
           © {new Date().getFullYear()} {s.site_name}
         </span>
         <span>ONE LITTLE ADVENTURE AT A TIME.</span>
-        <Link href="/login">管理者ログイン</Link>
+        <Link href="/login">{t('管理者ログイン')}</Link>
       </div>
       {!configured() && (
         <p className="demo-notice">
-          DEMO MODE — 掲載作品・記事はサンプルです。Supabase未接続。
+          {t('DEMO MODE — 掲載作品・記事はサンプルです。Supabase未接続。')}
         </p>
       )}
     </footer>
@@ -116,19 +139,20 @@ export function SectionTitle({
     </div>
   );
 }
-export function ContactCTA() {
+export async function ContactCTA() {
+  const t = await getTranslator();
   return (
     <section className="contact-cta">
       <p className="eyebrow">
         <Gem size={16} /> SAY HELLO, START SOMETHING
       </p>
       <h2>
-        「楽しそう！」を、
+        {t('「楽しそう！」を、')}
         <br />
-        一緒につくろう。
+        {t('一緒につくろう。')}
       </h2>
       <Link href="/contact" className="button button-primary">
-        お問い合わせ
+        {t('XのDMでお問い合わせ')}
         <ArrowRight size={18} />
       </Link>
     </section>

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+test.use({ locale: 'ja-JP' });
 
 test('ブランドと作品への導線・記事検索', async ({ page }) => {
   await page.goto('/');
