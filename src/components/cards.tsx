@@ -17,7 +17,7 @@ export async function GameCard({
         {game.cover_url && (
           <Image
             src={game.cover_url}
-            alt={`${t(game.title)} ${t('コンセプトアート')}`}
+            alt={`${game.title} ${t('コンセプトアート')}`}
             fill
             sizes="(max-width: 760px) 100vw, 65vw"
           />
@@ -33,22 +33,15 @@ export async function GameCard({
       </div>
       <div className="game-info">
         <div>
-          <p className="eyebrow">{t(game.genre)}</p>
-          <h3>{t(game.title)}</h3>
+          <p className="eyebrow">{game.genre}</p>
+          <h3>{game.title}</h3>
         </div>
-        <p>{t(game.description)}</p>
+        <p>{game.description}</p>
       </div>
     </Link>
   );
 }
-export async function PostCard({
-  post,
-  index = 0,
-}: {
-  post: Post;
-  index?: number;
-}) {
-  const t = await getTranslator();
+export function PostCard({ post, index = 0 }: { post: Post; index?: number }) {
   return (
     <Link className="post-row" href={`/blog/${post.slug}`}>
       <span className="post-number">0{index + 1}</span>
@@ -59,13 +52,13 @@ export async function PostCard({
       </div>
       <div className="post-summary">
         <div className="post-meta">
-          <span>{t(post.category)}</span>
+          <span>{post.category}</span>
           <time dateTime={post.published_at || ''}>
             {post.published_at?.slice(0, 10).replaceAll('-', '.')}
           </time>
         </div>
-        <h3>{t(post.title)}</h3>
-        <p>{t(post.excerpt)}</p>
+        <h3>{post.title}</h3>
+        <p>{post.excerpt}</p>
       </div>
       <ArrowUpRight className="post-arrow" size={24} />
     </Link>

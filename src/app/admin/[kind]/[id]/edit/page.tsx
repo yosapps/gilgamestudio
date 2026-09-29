@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { requireAdmin } from '@/lib/supabase';
-import { ContentForm } from '@/components/content-form';
+import { ContentEditor } from '@/components/content-editor';
 import type { Post, Game } from '@/lib/types';
 import { z } from 'zod';
 export default async function Edit({
@@ -19,12 +19,26 @@ export default async function Edit({
     .maybeSingle();
   if (error) throw new Error('取得に失敗しました');
   if (!data) notFound();
+  const { data: translation, error: translationError } = await db
+    .from(kind === 'posts' ? 'post_translations' : 'game_translations')
+    .select('*')
+    .eq(kind === 'posts' ? 'post_id' : 'game_id', id)
+    .maybeSingle();
+  const missingTable =
+    translationError && ['PGRST205', '42P01'].includes(translationError.code);
+  if (translationError && !missingTable)
+    throw new Error('英語版の取得に失敗しました');
   return (
     <>
       <div className="admin-heading">
         <h1>{kind === 'posts' ? '記事を編集' : 'ゲームを編集'}</h1>
       </div>
-      <ContentForm kind={kind} initial={data as Post | Game} />
+      <ContentEditor
+        kind={kind}
+        initial={data as Post | Game}
+        translation={translation || undefined}
+        translationsReady={!missingTable}
+      />
     </>
   );
 }

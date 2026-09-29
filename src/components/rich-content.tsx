@@ -6,19 +6,16 @@ import { Fragment, type ReactNode } from 'react';
 export function RichContent({
   node,
   depth = 0,
-  translate = (text) => text,
 }: {
   node: RichNode;
   depth?: number;
-  translate?: (text: string) => string;
 }) {
   if (depth > 30 || !node || typeof node !== 'object') return null;
-  const t = translate;
   const children = node.content?.map((n, i) => (
-    <RichContent node={n} depth={depth + 1} key={i} translate={translate} />
+    <RichContent node={n} depth={depth + 1} key={i} />
   ));
   if (node.type === 'text') {
-    let text: ReactNode = node.text ? t(node.text) : node.text;
+    let text: ReactNode = node.text;
     for (const mark of node.marks || []) {
       if (mark.type === 'bold') text = <strong>{text}</strong>;
       if (mark.type === 'italic') text = <em>{text}</em>;
@@ -75,7 +72,7 @@ export function RichContent({
         <figure>
           <Image
             src={src}
-            alt={t(String(node.attrs?.alt || '記事内画像'))}
+            alt={String(node.attrs?.alt || '')}
             width={1200}
             height={700}
           />

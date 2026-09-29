@@ -1,13 +1,11 @@
 'use client';
-import { useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { localeCookie, type Locale } from '@/lib/locale';
 import { useLocale } from './language-provider';
 
 export function LanguageSwitcher() {
   const locale = useLocale();
-  const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const [pending, setPending] = useState(false);
   const [error, setError] = useState(false);
   function select(next: Locale) {
     if (next === locale) return;
@@ -16,7 +14,11 @@ export function LanguageSwitcher() {
       .split('; ')
       .some((entry) => entry === `${localeCookie}=${next}`);
     setError(!saved);
-    if (saved) startTransition(() => router.refresh());
+    if (saved) {
+      setPending(true);
+      // Refresh the document and prefetched routes together after changing language.
+      window.location.reload();
+    }
   }
   return (
     <div className="language-control">

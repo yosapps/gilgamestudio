@@ -51,7 +51,21 @@ tests/e2e/             Playwright PC / モバイル
 
 公開サイトは日本語・英語に対応しています。初回はブラウザーの `Accept-Language` の優先順位から選び、日本語・英語以外の言語のみ指定されている場合は英語、指定がない場合は日本語を表示します。IPによる位置情報取得は行いません。ヘッダーの「日本語 / EN」で切り替えると、`gilgame_locale` Cookieに1年間保存し、以後はその選択を優先します。ページURL・検索条件を保ったまま切り替えられます。
 
-日本語フォントはセルフホストの **M PLUS Rounded 1c**、欧文は **Space Grotesk** です。UIの英訳は `src/lib/translations.ts`、公開記事の英訳は `src/lib/content-translations.ts` で管理します。日本語の原文と完全一致する文言に英訳を適用するため、CMSで新規作成・編集した文章は翻訳辞書にも追加してください。翻訳がない文章は原文を表示します。管理CMSの編集画面は日本語のままです。
+日本語フォントはセルフホストの **M PLUS Rounded 1c**、欧文は **Space Grotesk** です。UIの英訳は `src/lib/translations.ts` で管理します。ブログ・ゲームの英語版はCMSの「English」から登録でき、Supabaseの `post_translations` / `game_translations` に保存されます。管理CMSの操作ラベルは日本語です。
+
+### ブログ・ゲームの英語版
+
+1. `supabase/migrations/202609290001_content_translations.sql` をSupabaseのSQL Editorで実行します。
+2. CMSで元の記事・ゲームを保存してから「English」を開き、英語のタイトル・概要・本文・カテゴリ／ジャンル・タグを入力します。記事はSEOタイトル・説明、ゲームは外部リンクも英語用に設定できます。
+3. 英語版の公開設定を「公開」にして「英語版を保存」を押します。英語版は元データも公開されている場合にのみ表示され、記事の予約日時にも従います。
+
+URL・画像・公開日時・ゲームの開発状況は日本語版と共通です。英語版が下書き・未登録なら原文を表示します。元データの削除時は対応する翻訳も削除されます。英語タグを日本語と同じ順序にすると、言語を切り替えても同じタグで絞り込めます。日本語・英語は別々に保存するため、一方の編集で他方は上書きされません。
+
+初期記事の英訳は `docs/releases/site-launch.en.json` にあります。テーブル作成後、次のコマンドで既存の公開記事に紐づけて登録できます。既存の英語版は上書きしません。保守用Service Roleキーはサーバー内だけで使用し、公開バンドルには渡しません。
+
+```powershell
+docker compose exec web node scripts/seed-english-launch.mjs --apply
+```
 
 ## Supabaseを接続する
 

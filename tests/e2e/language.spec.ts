@@ -26,8 +26,8 @@ test('browser language, manual selection, persistence and translated public page
   for (const path of ['/games', '/blog', '/about', '/contact']) {
     await page.goto(path);
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-    // The language control intentionally retains its native Japanese label.
-    const copy = await page.locator('main').innerText();
+    // CMS text without a published translation intentionally stays original.
+    const copy = await page.locator('.page-intro').innerText();
     expect(copy).not.toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
     expect(
       await page.evaluate(
@@ -39,17 +39,6 @@ test('browser language, manual selection, persistence and translated public page
       fullPage: true,
     });
   }
-  await page.goto('/blog/official-website-launch');
-  await expect(page.locator('h1')).toContainText(
-    'Welcome to the official Gilgame studio website',
-  );
-  expect(await page.locator('main').innerText()).not.toMatch(
-    /[\u3040-\u30ff\u3400-\u9fff]/,
-  );
-  await page.goto('/blog');
-  await page.getByLabel('Keyword').fill('Welcome');
-  await page.getByRole('button', { name: 'Search', exact: true }).click();
-  await expect(page.locator('.post-row')).toHaveCount(1);
   await page.goto('/blog?q=hello');
   await page.getByRole('button', { name: '日本語', exact: true }).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'ja');
@@ -68,7 +57,7 @@ test('browser language, manual selection, persistence and translated public page
   await page.evaluate(() => document.fonts.ready);
   expect(
     await page.evaluate(() =>
-      document.fonts.check('700 20px "M PLUS Rounded 1c"', '冒険'),
+      document.fonts.check('800 20px "M PLUS Rounded 1c"', '冒険'),
     ),
   ).toBe(true);
   await page.screenshot({
@@ -78,6 +67,30 @@ test('browser language, manual selection, persistence and translated public page
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.locator('h1')).toContainText('From small steps,');
   expect(errors).toEqual([]);
+});
+
+test('English launch article is served from CMS', async ({ page }) => {
+  await page.goto('/blog/official-website-launch');
+  await expect(page.locator('h1')).toContainText(
+    'Welcome to the official Gilgame studio website',
+  );
+  expect(await page.locator('main').innerText()).not.toMatch(
+    /[\u3040-\u30ff\u3400-\u9fff]/,
+  );
+  await page.goto('/blog');
+  await page.getByLabel('Keyword').fill('Welcome');
+  await page.getByRole('button', { name: 'Search', exact: true }).click();
+  await expect(page.locator('.post-row')).toHaveCount(1);
+  await page.getByLabel('Category').selectOption({ label: 'News' });
+  await page.getByRole('button', { name: 'Search', exact: true }).click();
+  await page.getByRole('button', { name: '日本語', exact: true }).click();
+  await expect(page.locator('.post-row')).toHaveCount(0); // English keyword is preserved.
+  await page.getByLabel('キーワード').fill('');
+  await page.getByRole('button', { name: '検索', exact: true }).click();
+  await expect(page.locator('.post-row')).toHaveCount(1); // Same category across languages.
+  await expect(page.locator('.post-row h3')).toContainText(
+    '公式サイトを公開しました',
+  );
 });
 
 test('Japanese browser receives Japanese on first visit', async ({

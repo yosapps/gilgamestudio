@@ -29,8 +29,10 @@ export default async function Blog({
         `${p.title} ${p.excerpt} ${t(p.title)} ${t(p.excerpt)}`
           .toLowerCase()
           .includes(q.q.toLowerCase())) &&
-      (!q.category || p.category === q.category) &&
-      (!q.tag || p.tags.includes(q.tag)),
+      (!q.category || (p.source_category || p.category) === q.category) &&
+      (!q.tag ||
+        (p.source_tags || p.tags).includes(q.tag) ||
+        p.tags.includes(q.tag)),
   );
   const pages = Math.max(1, Math.ceil(filtered.length / 6));
   const page = Math.min(pages, Math.max(1, Number(q.page) || 1));
@@ -52,9 +54,13 @@ export default async function Blog({
           {t('カテゴリ')}
           <select name="category" defaultValue={q.category || ''}>
             <option value="">{t('すべて')}</option>
-            {[...new Set(all.map((p) => p.category))].map((c) => (
-              <option key={c} value={c}>
-                {t(c)}
+            {[
+              ...new Map(
+                all.map((p) => [p.source_category || p.category, p.category]),
+              ).entries(),
+            ].map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
               </option>
             ))}
           </select>
@@ -63,9 +69,18 @@ export default async function Blog({
           {t('タグ')}
           <select name="tag" defaultValue={q.tag || ''}>
             <option value="">{t('すべて')}</option>
-            {[...new Set(all.flatMap((p) => p.tags))].map((tag) => (
-              <option key={tag} value={tag}>
-                {t(tag)}
+            {[
+              ...new Map(
+                all.flatMap((p) =>
+                  p.tags.map(
+                    (tag, index) =>
+                      [p.source_tags?.[index] || tag, tag] as const,
+                  ),
+                ),
+              ).entries(),
+            ].map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
               </option>
             ))}
           </select>

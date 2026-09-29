@@ -1,7 +1,7 @@
 import { getGames, getPosts, siteUrl } from '@/lib/data';
 import type { MetadataRoute } from 'next';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [games, posts] = await Promise.all([getGames(), getPosts()]);
+  const [games, posts] = await Promise.all([getGames('ja'), getPosts('ja')]);
   const base = siteUrl();
   return [
     ...['', '/games', '/blog', '/about', '/contact'].map((path) => ({

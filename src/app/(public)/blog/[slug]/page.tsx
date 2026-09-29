@@ -12,26 +12,25 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const t = await getTranslator();
   const { slug } = await params;
   const p = (await getPosts()).find((p) => p.slug === slug);
   if (!p) notFound();
   return {
-    title: t(p.seo_title || p.title),
-    description: t(p.seo_description || p.excerpt),
+    title: p.seo_title || p.title,
+    description: p.seo_description || p.excerpt,
     alternates: { canonical: `/blog/${p.slug}` },
     openGraph: {
       type: 'article',
-      title: t(p.title),
-      description: t(p.excerpt),
+      title: p.title,
+      description: p.excerpt,
       publishedTime: p.published_at || undefined,
       images: p.cover_url ? [p.cover_url] : [],
     },
     twitter: {
       card: 'summary_large_image',
       site: studioBrand.x.handle,
-      title: t(p.title),
-      description: t(p.excerpt),
+      title: p.title,
+      description: p.excerpt,
       images: p.cover_url ? [p.cover_url] : [],
     },
   };
@@ -60,28 +59,25 @@ export default async function Article({
       </Link>
       <header className="page-intro">
         <p className="eyebrow">
-          {t(p.category)} <span> / </span>
+          {p.category} <span> / </span>
           <time>{p.published_at?.slice(0, 10)}</time>
         </p>
-        <h1>{t(p.title)}</h1>
-        <p>{t(p.excerpt)}</p>
+        <h1>{p.title}</h1>
+        <p>{p.excerpt}</p>
       </header>
       {p.cover_url && (
         <div className="detail-cover">
-          <Image
-            src={p.cover_url}
-            alt={t(p.title)}
-            fill
-            priority
-            sizes="100vw"
-          />
+          <Image src={p.cover_url} alt={p.title} fill priority sizes="100vw" />
         </div>
       )}
       <div className="prose article-body">
-        <RichContent node={p.content} translate={t} />
+        <RichContent node={p.content} />
         <div className="tags">
-          {p.tags.map((tag) => (
-            <Link href={`/blog?tag=${encodeURIComponent(tag)}`} key={tag}>
+          {p.tags.map((tag, index) => (
+            <Link
+              href={`/blog?tag=${encodeURIComponent(p.source_tags?.[index] || tag)}`}
+              key={tag}
+            >
               #{t(tag)}
             </Link>
           ))}
@@ -100,10 +96,10 @@ export default async function Article({
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'BlogPosting',
-            headline: t(p.title),
+            headline: p.title,
             datePublished: p.published_at,
             dateModified: p.updated_at,
-            description: t(p.excerpt),
+            description: p.excerpt,
             url: `${siteUrl()}/blog/${p.slug}`,
           }).replace(/</g, '\\u003c'),
         }}

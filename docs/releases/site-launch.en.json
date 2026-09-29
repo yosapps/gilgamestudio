@@ -1,0 +1,203 @@
+{
+  "locale": "en",
+  "title": "Welcome to the official Gilgame studio website",
+  "excerpt": "Small steps, sparkling adventures. The official website of independent game developer Gilgame studio is now open. This is where we’ll share our creative journey and studio news.",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Hello from Gilgame studio"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Welcome to our official website. Gilgame studio is an independent game studio turning little “what ifs” into games."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The joy of discovery, the thrill of making something work, and worlds you want to return to. These are the experiences we cherish as we create games that bring a smile."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "We’ve launched this website as a home for sharing what we’re making."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "A new step forward, with Gilgame"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Here to welcome you is Gilgame, our sky-blue companion with a golden shell and a blue crystal on the forehead."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "With white and sky-blue tones, crystal-blue accents, and touches of sparkling gold, this site reflects the little adventures ahead. Together with Gilgame, we hope to make it a welcoming place to drop by."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "What you’ll find here"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Games: Introductions to the games we’re making and information about each project."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Journal: Development updates, thoughts from the creative process, and studio news."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "About: Get to know the studio and the things we value in making games."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "We’ll be preparing game introductions little by little. This first announcement marks the beginning of our creative journal."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Thanks for joining us at the start"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "It’s a small beginning, but we’ll keep building our games and this website, treasuring each discovery along the way."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "We’d love for you to visit again whenever we cross your mind. Thank you for being part of Gilgame and Gilgame studio’s journey."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Visit the official website",
+            "marks": [
+              {
+                "type": "link",
+                "attrs": {
+                  "href": "https://www.gilgamestudio.com/"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "category": "News",
+  "tags": [
+    "Website launch",
+    "Gilgame studio",
+    "Gilgame"
+  ],
+  "seo_title": "Welcome to the official Gilgame studio website",
+  "seo_description": "The official Gilgame studio website is here. Join Gilgame for game introductions, development stories, and news from our independent studio.",
+  "is_published": true
+}

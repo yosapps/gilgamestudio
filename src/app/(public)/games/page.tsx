@@ -19,7 +19,7 @@ export default async function Games({
   const all = await getGames();
   const games = all.filter(
     (g) =>
-      (!q.genre || g.genre === q.genre) &&
+      (!q.genre || (g.source_genre || g.genre) === q.genre) &&
       (!q.status || g.development_status === q.status),
   );
   return (
@@ -36,9 +36,13 @@ export default async function Games({
           {t('ジャンル')}
           <select name="genre" defaultValue={q.genre || ''}>
             <option value="">{t('すべて')}</option>
-            {[...new Set(all.map((g) => g.genre))].map((v) => (
-              <option key={v} value={v}>
-                {t(v)}
+            {[
+              ...new Map(
+                all.map((g) => [g.source_genre || g.genre, g.genre]),
+              ).entries(),
+            ].map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
               </option>
             ))}
           </select>
@@ -48,7 +52,9 @@ export default async function Games({
           <select name="status" defaultValue={q.status || ''}>
             <option value="">{t('すべて')}</option>
             {[...new Set(all.map((g) => g.development_status))].map((v) => (
-              <option key={v}>{v}</option>
+              <option key={v} value={v}>
+                {t(v)}
+              </option>
             ))}
           </select>
         </label>

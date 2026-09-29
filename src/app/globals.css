@@ -1865,6 +1865,11 @@ body {
   color: #537e97;
   font-size: 10px;
 }
+.character-image {
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
 .ticker {
   background: #0b4e89;
   color: #e1f6ff;
@@ -2659,4 +2664,28 @@ html[lang='en'] .about-preview h2 {
   html[lang='en'] .character-hello {
     font-size: 13px;
   }
+}
+
+.editor-language-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.editor-language-bar button {
+  min-height: 44px;
+  padding: 10px 18px;
+  color: #cce7fa;
+  background: #102b47;
+  border: 1px solid #2b4b65;
+  border-radius: 12px;
+}
+.editor-language-bar button[aria-pressed='true'] {
+  color: #0a1e35;
+  background: #72d4ff;
+  border-color: #72d4ff;
+}
+.editor-language-bar span {
+  margin-left: 10px;
+  font-size: 11px;
 }

@@ -167,6 +167,27 @@ export const settingsSchema = z.object({
   og_image: imageUrl,
   social_links: links,
 });
+export const postTranslationSchema = z.object({
+  locale: z.literal('en'),
+  title: z.string().trim().min(1).max(200),
+  excerpt: z.string().max(500),
+  content: richDocument,
+  category: z.string().max(80),
+  tags: strings,
+  seo_title: z.string().max(200),
+  seo_description: z.string().max(500),
+  is_published: z.boolean(),
+});
+export const gameTranslationSchema = z.object({
+  locale: z.literal('en'),
+  title: z.string().trim().min(1).max(200),
+  description: z.string().max(500),
+  body: z.string().max(50000),
+  genre: z.string().max(80),
+  tags: strings,
+  external_links: links,
+  is_published: z.boolean(),
+});
 export const contactSchema = z.object({
   name: z.string().trim().min(1).max(100),
   email: z.email().max(254),

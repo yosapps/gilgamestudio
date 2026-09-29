@@ -7,6 +7,7 @@ const state = vi.hoisted(() => ({
 }));
 const query = vi.hoisted(() => ({
   insert: vi.fn(),
+  upsert: vi.fn(),
   update: vi.fn(),
   delete: vi.fn(),
   eq: vi.fn(),
@@ -47,12 +48,103 @@ beforeEach(() => {
     admin: true,
     error: null,
   });
-  for (const k of ['insert', 'update', 'delete', 'eq', 'select'] as const)
+  for (const k of [
+    'insert',
+    'upsert',
+    'update',
+    'delete',
+    'eq',
+    'select',
+  ] as const)
     query[k].mockReturnValue(query);
   query.single.mockImplementation(async () => ({
-    data: state.error ? null : { id },
+    data: state.error ? null : { id, post_id: id, game_id: id },
     error: state.error,
   }));
+});
+
+describe('英語版の保存', () => {
+  const translation = {
+    locale: 'en',
+    title: 'English article',
+    excerpt: 'Summary',
+    content: { type: 'doc', content: [] },
+    category: 'News',
+    tags: ['Studio'],
+    seo_title: '',
+    seo_description: '',
+    is_published: false,
+  };
+  it('元記事IDをキーに英語のみupsertする', async () => {
+    const response = await request('post-translations', {
+      id,
+      data: { ...translation, post_id: 'injected', status: 'published' },
+    });
+    expect(response.status).toBe(200);
+    expect(from).toHaveBeenCalledWith('post_translations');
+    expect(query.upsert).toHaveBeenCalledWith(
+      { ...translation, post_id: id },
+      { onConflict: 'post_id' },
+    );
+    expect(query.update).not.toHaveBeenCalled();
+    expect((await response.json()).id).toBe(id);
+  });
+  it('元データなし・不正な言語・不正な公開設定を拒否する', async () => {
+    expect(
+      (await request('post-translations', { data: translation })).status,
+    ).toBe(400);
+    expect(
+      (
+        await request('post-translations', {
+          id,
+          data: { ...translation, locale: 'ja' },
+        })
+      ).status,
+    ).toBe(400);
+    expect(
+      (
+        await request('post-translations', {
+          id,
+          data: { ...translation, is_published: 'true' },
+        })
+      ).status,
+    ).toBe(400);
+    expect(from).not.toHaveBeenCalled();
+  });
+  it('英語版にも認可とOrigin制限を適用する', async () => {
+    state.admin = false;
+    expect(
+      (await request('post-translations', { id, data: translation })).status,
+    ).toBe(403);
+    state.admin = true;
+    expect(
+      (
+        await request(
+          'post-translations',
+          { id, data: translation },
+          'https://other.example',
+        )
+      ).status,
+    ).toBe(403);
+    expect(from).not.toHaveBeenCalled();
+  });
+  it('ゲームの英語版を保存できる', async () => {
+    const data = {
+      locale: 'en',
+      title: 'English game',
+      description: 'Summary',
+      body: 'Story',
+      genre: 'Adventure',
+      tags: [],
+      external_links: [],
+      is_published: true,
+    };
+    expect((await request('game-translations', { id, data })).status).toBe(200);
+    expect(query.upsert).toHaveBeenCalledWith(
+      { ...data, game_id: id },
+      { onConflict: 'game_id' },
+    );
+  });
 });
 describe('管理API認可', () => {
   it('未接続を偽装せず503', async () => {

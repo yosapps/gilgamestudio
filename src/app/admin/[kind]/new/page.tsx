@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { requireAdmin } from '@/lib/supabase';
-import { ContentForm } from '@/components/content-form';
+import { ContentEditor } from '@/components/content-editor';
 export default async function New({
   params,
 }: {
@@ -14,7 +14,7 @@ export default async function New({
       <div className="admin-heading">
         <h1>{kind === 'posts' ? '新しい記事を書く' : 'ゲームを追加'}</h1>
       </div>
-      <ContentForm kind={kind} />
+      <ContentEditor kind={kind} />
     </>
   );
 }

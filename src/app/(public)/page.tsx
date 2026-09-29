@@ -94,12 +94,14 @@ export default async function Home() {
       <section className="character-section" aria-labelledby="meet-gilgame">
         <div className="character-portrait">
           <span className="character-orbit" />
+          {/* 画像を真ん中に配置するためのコメント */}
           <Image
-            src="/gilgame.png"
+            src="/gilgame-sit.png"
             alt={t('水色のからだ、金色の甲羅、青いクリスタルが目印のギルガメ')}
-            width={650}
-            height={650}
+            width={500}
+            height={500}
             sizes="(max-width:760px) 85vw, 45vw"
+            className="character-image"
           />
         </div>
         <div className="character-story">

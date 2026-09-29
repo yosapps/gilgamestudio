@@ -11,24 +11,23 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const t = await getTranslator();
   const { slug } = await params;
   const g = (await getGames()).find((g) => g.slug === slug);
   if (!g) notFound();
   return {
-    title: t(g.title),
-    description: t(g.description),
+    title: g.title,
+    description: g.description,
     alternates: { canonical: `/games/${g.slug}` },
     openGraph: {
-      title: t(g.title),
-      description: t(g.description),
+      title: g.title,
+      description: g.description,
       images: g.cover_url ? [g.cover_url] : [],
     },
     twitter: {
       card: 'summary_large_image',
       site: studioBrand.x.handle,
-      title: t(g.title),
-      description: t(g.description),
+      title: g.title,
+      description: g.description,
       images: g.cover_url ? [g.cover_url] : [],
     },
   };
@@ -50,16 +49,16 @@ export default async function GameDetail({
       </Link>
       <div className="page-intro">
         <p className="eyebrow">
-          {t(g.genre)} / {t(g.development_status)}
+          {g.genre} / {t(g.development_status)}
         </p>
-        <h1 className="game-title">{t(g.title)}</h1>
-        <p>{t(g.description)}</p>
+        <h1 className="game-title">{g.title}</h1>
+        <p>{g.description}</p>
       </div>
       {g.cover_url && (
         <div className="detail-cover">
           <Image
             src={g.cover_url}
-            alt={`${t(g.title)} ${t('キービジュアル')}`}
+            alt={`${g.title} ${t('キービジュアル')}`}
             fill
             priority
             sizes="100vw"
@@ -109,7 +108,7 @@ export default async function GameDetail({
           <iframe
             className="trailer"
             src={`https://www.youtube-nocookie.com/embed/${video}`}
-            title={`${t(g.title)} ${t('トレーラー')}`}
+            title={`${g.title} ${t('トレーラー')}`}
             allow="encrypted-media; picture-in-picture"
             allowFullScreen
             loading="lazy"
@@ -124,7 +123,7 @@ export default async function GameDetail({
               <a href={src} target="_blank" rel="noopener noreferrer" key={i}>
                 <Image
                   src={src}
-                  alt={`${t(g.title)} ${t('スクリーンショット')} ${i + 1}`}
+                  alt={`${g.title} ${t('スクリーンショット')} ${i + 1}`}
                   width={1200}
                   height={700}
                 />
@@ -139,10 +138,10 @@ export default async function GameDetail({
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'VideoGame',
-            name: t(g.title),
-            description: t(g.description),
+            name: g.title,
+            description: g.description,
             url: `${siteUrl()}/games/${g.slug}`,
-            genre: t(g.genre),
+            genre: g.genre,
           }).replace(/</g, '\\u003c'),
         }}
       />

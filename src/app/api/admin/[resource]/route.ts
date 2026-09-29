@@ -1,5 +1,11 @@
 import { supabase, configured } from '@/lib/supabase';
-import { postSchema, gameSchema, settingsSchema } from '@/lib/validation';
+import {
+  postSchema,
+  gameSchema,
+  settingsSchema,
+  postTranslationSchema,
+  gameTranslationSchema,
+} from '@/lib/validation';
 import { NextResponse } from 'next/server';
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
@@ -8,6 +14,8 @@ const resources = {
   posts: postSchema,
   games: gameSchema,
   settings: settingsSchema,
+  'post-translations': postTranslationSchema,
+  'game-translations': gameTranslationSchema,
 };
 export async function POST(
   req: Request,
@@ -58,8 +66,23 @@ export async function POST(
       { error: 'データ形式が不正です' },
       { status: 400 },
     );
-  const table = resource === 'settings' ? 'site_settings' : resource;
+  const translation =
+    resource === 'post-translations' || resource === 'game-translations';
+  const parent = resource === 'post-translations' ? 'posts' : 'games';
+  const table =
+    resource === 'settings' ? 'site_settings' : resource.replace('-', '_');
+  const primaryKey = translation
+    ? parent === 'posts'
+      ? 'post_id'
+      : 'game_id'
+    : 'id';
+  const cacheTag = translation ? parent : resource;
   const id = body.id;
+  if (translation && !id)
+    return NextResponse.json(
+      { error: '日本語版を先に保存してください。' },
+      { status: 400 },
+    );
   if (resource !== 'settings' && id && !z.uuid().safeParse(id).success)
     return NextResponse.json({ error: 'IDが不正です' }, { status: 400 });
   if (body.action === 'delete') {
@@ -68,15 +91,15 @@ export async function POST(
     const { data, error } = await db
       .from(table)
       .delete()
-      .eq('id', id)
-      .select('id')
+      .eq(primaryKey, id)
+      .select(primaryKey)
       .single();
     if (error || !data)
       return NextResponse.json(
         { error: '削除に失敗しました。再読み込みしてください。' },
         { status: 409 },
       );
-    revalidateTag(resource, { expire: 0 });
+    revalidateTag(cacheTag, { expire: 0 });
     return NextResponse.json({ ok: true });
   }
   const parsed = resources[resource as keyof typeof resources].safeParse(
@@ -92,23 +115,30 @@ export async function POST(
       { status: 400 },
     );
   const payload: Record<string, unknown> = parsed.data;
-  const query =
-    resource === 'settings'
+  const query = translation
+    ? db
+        .from(table)
+        .upsert({ ...payload, [primaryKey]: id }, { onConflict: primaryKey })
+    : resource === 'settings'
       ? db.from(table).update(payload).eq('id', 1)
       : id
         ? db.from(table).update(payload).eq('id', id)
         : db.from(table).insert(payload);
-  const { data, error } = await query.select('id').single();
+  const { data, error } = await query.select(primaryKey).single();
   if (error)
     return NextResponse.json(
       {
         error:
-          error.code === '23505'
-            ? 'このスラッグはすでに使われています。'
-            : '保存に失敗しました。入力内容と接続をご確認ください。',
+          error.code === 'PGRST205' || error.code === '42P01'
+            ? '英語テーブルが未作成です。翻訳マイグレーションを実行してください。'
+            : error.code === '23503'
+              ? '元の記事・ゲームがありません。再読み込みしてください。'
+              : error.code === '23505'
+                ? 'このスラッグはすでに使われています。'
+                : '保存に失敗しました。入力内容と接続をご確認ください。',
       },
       { status: 409 },
     );
-  revalidateTag(resource, { expire: 0 });
-  return NextResponse.json({ ok: true, id: data.id });
+  revalidateTag(cacheTag, { expire: 0 });
+  return NextResponse.json({ ok: true, id: data[primaryKey] });
 }

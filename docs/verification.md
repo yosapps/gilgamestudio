@@ -36,3 +36,12 @@
 - production: http://localhost:3001
 
 DBテスト用コンテナは停止済みです。起動・停止・再ビルドの手順は[README](../README.md)を参照してください。
+
+## 日英切り替え・英語CMS（2026-09-29）
+
+- 日本語フォントをM PLUS Rounded 1cへ変更。PC・スマートフォンで実フォント読み込みと表示を確認。
+- 初回のブラウザー言語判定、手動選択、Cookie保存、再訪問・検索条件の保持をPlaywrightで確認（言語テスト4件成功）。既存の公開画面テスト8件も成功。
+- 英語用CMSの保存API、入力検証、翻訳の下書きフォールバックを含む単体テスト40件成功。Lint・型チェック・本番ビルド成功。
+- 隔離PostgreSQLで翻訳テーブルのRLS、元記事の予約日時、下書きの非公開、管理者upsert、外部キー、元データ削除時のcascadeを検証して成功。
+- Supabaseクラウドへの `202609290001_content_translations.sql` 適用は未完了。現在の接続ではテーブル作成用SQLを実行できないため、SQL Editorでの適用待ち。
+- 既存ブログの英訳は `docs/releases/site-launch.en.json` に準備済み。クラウド登録と登録後の英語記事E2EはSQL適用後に実施する。登録スクリプトは `scripts/seed-english-launch.mjs`。

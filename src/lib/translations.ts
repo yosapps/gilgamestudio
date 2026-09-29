@@ -3,6 +3,9 @@ import { studioBrand } from './brand';
 
 // Japanese source copy is the key. CMS content without a translation stays original.
 export const english: Record<string, string> = {
+  プロトタイプ: 'Prototype',
+  リリース済み: 'Released',
+  開発休止: 'On hold',
   記事内画像: 'Article image',
   'スタジオから、こんにちは。': 'Hello from the studio.',
   [studioBrand.description]:
