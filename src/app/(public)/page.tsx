@@ -1,5 +1,6 @@
+import { GilgameHunt } from '@/components/gilgame-hunt';
 import { getTranslator } from '@/lib/locale-server';
-import Link from 'next/link';
+import Link from '@/components/localized-link';
 import {
   ArrowRight,
   ArrowDown,
@@ -186,6 +187,9 @@ export default async function Home() {
           <p className="muted">Unreal Engine · Godot · Blender · TypeScript</p>
         </div>
       </section>
+      <div className="gilgame-hunt-strip">
+        <GilgameHunt id="home" />
+      </div>
       <OfficialX />
       <ContactCTA />
       <script

@@ -2,7 +2,8 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import ImageExtension from '@tiptap/extension-image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { MediaPicker } from './media-picker';
 import type { RichNode } from '@/lib/types';
 import { RichContent } from './rich-content';
 import { safeUrl, imageUrl } from '@/lib/validation';
@@ -29,6 +30,10 @@ export default function Editor({
     immediatelyRender: false,
     onUpdate: ({ editor }) => onChange(editor.getJSON() as RichNode),
   });
+  useEffect(() => {
+    if (editor && JSON.stringify(editor.getJSON()) !== JSON.stringify(value))
+      editor.commands.setContent(value, { emitUpdate: false });
+  }, [editor, value]);
   if (!editor) return <div className="skeleton" style={{ height: 380 }} />;
   return (
     <div>
@@ -124,6 +129,14 @@ export default function Editor({
         >
           {preview ? '編集に戻る' : 'プレビュー'}
         </button>
+      </div>
+      <div className="editor-media">
+        <MediaPicker
+          label="メディアから画像を挿入"
+          onSelect={(src, name) =>
+            editor.chain().focus().setImage({ src, alt: name }).run()
+          }
+        />
       </div>
       {mode && (
         <div className="admin-panel">

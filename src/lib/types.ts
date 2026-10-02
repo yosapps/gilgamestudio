@@ -7,6 +7,8 @@ export type RichNode = {
   content?: RichNode[];
 };
 export type Post = {
+  game_id?: string | null;
+  source_revision?: number;
   source_category?: string;
   source_tags?: string[];
   content_locale?: 'ja' | 'en';
@@ -26,6 +28,9 @@ export type Post = {
   updated_at: string;
 };
 export type Game = {
+  source_revision?: number;
+  primary_action?: 'auto' | 'wishlist' | 'demo' | 'buy' | 'none';
+  primary_url?: string;
   source_genre?: string;
   source_tags?: string[];
   content_locale?: 'ja' | 'en';
@@ -54,6 +59,8 @@ export type Settings = {
   description: string;
   profile: string;
   og_image: string;
+  press_guidelines?: string;
+  press_guidelines_en?: string;
   social_links: { label: string; url: string }[];
 };
 export type PostTranslation = Pick<
@@ -68,6 +75,7 @@ export type PostTranslation = Pick<
 > & {
   post_id: string;
   locale: 'en';
+  source_revision?: number;
   is_published: boolean;
 };
 export type GameTranslation = Pick<
@@ -76,5 +84,6 @@ export type GameTranslation = Pick<
 > & {
   game_id: string;
   locale: 'en';
+  source_revision?: number;
   is_published: boolean;
 };

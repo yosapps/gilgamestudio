@@ -44,6 +44,14 @@ test('未認証の管理画面はログインへ転送される', async ({ page 
 test('モーション抑制でも画像と本文を表示し横にはみ出さない', async ({
   page,
 }) => {
+  const hydrationErrors: string[] = [];
+  page.on('console', (message) => {
+    if (
+      message.type() === 'error' &&
+      /hydration|hydrated|server rendered HTML/i.test(message.text())
+    )
+      hydrationErrors.push(message.text());
+  });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   for (const path of ['/', '/games', '/blog', '/about', '/contact', '/login']) {
     await page.goto(path);
@@ -56,6 +64,7 @@ test('モーション抑制でも画像と本文を表示し横にはみ出さ�
     if (path === '/')
       await expect(page.locator('.hero-character')).toBeVisible();
   }
+  expect(hydrationErrors).toEqual([]);
 });
 
 test('不存在URLは404、ブランドのSEOとアイコンを配信', async ({

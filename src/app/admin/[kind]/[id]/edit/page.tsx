@@ -11,7 +11,7 @@ export default async function Edit({
   const { kind, id } = await params;
   if ((kind !== 'posts' && kind !== 'games') || !z.uuid().safeParse(id).success)
     notFound();
-  const { db } = await requireAdmin();
+  const { db, user } = await requireAdmin();
   const { data, error } = await db
     .from(kind)
     .select('*')
@@ -28,6 +28,11 @@ export default async function Edit({
     translationError && ['PGRST205', '42P01'].includes(translationError.code);
   if (translationError && !missingTable)
     throw new Error('英語版の取得に失敗しました');
+  const { data: games, error: gameError } = await db
+    .from('games')
+    .select('id,title')
+    .order('title');
+  if (gameError) throw new Error('ゲーム一覧を取得できませんでした');
   return (
     <>
       <div className="admin-heading">
@@ -35,6 +40,8 @@ export default async function Edit({
       </div>
       <ContentEditor
         kind={kind}
+        games={games || []}
+        draftScope={user.id}
         initial={data as Post | Game}
         translation={translation || undefined}
         translationsReady={!missingTable}

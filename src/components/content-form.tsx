@@ -1,10 +1,14 @@
 'use client';
-import { useForm } from 'react-hook-form';
+import { useHydrated } from './use-hydrated';
+import { useForm, useWatch } from 'react-hook-form';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
+import { MediaPicker } from './media-picker';
+import { useFormDraft, DraftNotice } from './use-form-draft';
 import { DeleteDialog } from './delete-dialog';
+import type { DraftData } from '@/lib/drafts';
 import type { Post, Game, Settings, RichNode } from '@/lib/types';
 const Editor = dynamic(() => import('./editor'), {
   ssr: false,
@@ -21,10 +25,15 @@ function localDate(v: string | null | undefined) {
 export function ContentForm({
   kind,
   initial,
+  games = [],
+  draftScope,
 }: {
   kind: 'posts' | 'games' | 'settings';
   initial?: Post | Game | Settings;
+  games?: Pick<Game, 'id' | 'title'>[];
+  draftScope: string;
 }) {
+  const hydrated = useHydrated();
   const source = initial as unknown as Record<string, unknown> | undefined;
   const values: Fields = {};
   for (const [k, v] of Object.entries(source || {})) {
@@ -42,6 +51,10 @@ export function ContentForm({
   values.published_at = localDate(source?.published_at as string);
   const {
     register,
+    control,
+    getValues,
+    setValue,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<Fields>({
@@ -65,6 +78,24 @@ export function ContentForm({
     source?.id as string | number | undefined,
   );
   const router = useRouter();
+  const watched = useWatch({ control }) as Fields;
+  const baseUpdatedAt =
+    typeof source?.updated_at === 'string' ? source.updated_at : '';
+  const draft = useFormDraft(
+    'gilgame:draft:' +
+      draftScope +
+      ':' +
+      kind +
+      ':' +
+      (source?.id || 'new') +
+      ':ja',
+    { fields: watched, content },
+    baseUpdatedAt,
+    (data) => {
+      reset(data.fields);
+      setContent(data.content);
+    },
+  );
   const csv = (s: string) =>
     s
       ? s
@@ -84,7 +115,8 @@ export function ContentForm({
       const [label, ...url] = v.split('|');
       return { label: label.trim(), url: url.join('|').trim() };
     });
-  async function request(body: unknown) {
+  async function request(body: unknown, saved?: DraftData) {
+    const submittedAt = draft.beginSave();
     setPending(true);
     setMessage('');
     setSuccess(false);
@@ -96,6 +128,9 @@ export function ContentForm({
       });
       const result = await res.json();
       if (!res.ok) throw new Error(result.error || '保存できませんでした');
+      if ((body as { action?: string }).action === 'delete') draft.discard();
+      else
+        draft.markSaved(saved || { fields: getValues(), content }, submittedAt);
       setSuccess(true);
       setMessage('保存しました');
       if (result.id && !id) {
@@ -120,9 +155,12 @@ export function ContentForm({
         profile: f.profile || '',
         og_image: f.og_image || '',
         social_links: links(f.social_links),
+        press_guidelines: f.press_guidelines || '',
+        press_guidelines_en: f.press_guidelines_en || '',
       };
     else if (kind === 'posts')
       data = {
+        game_id: f.game_id || null,
         title: f.title || '',
         slug: f.slug || '',
         excerpt: f.excerpt || '',
@@ -139,6 +177,8 @@ export function ContentForm({
       };
     else
       data = {
+        primary_action: f.primary_action || 'auto',
+        primary_url: f.primary_url || '',
         title: f.title || '',
         slug: f.slug || '',
         description: f.description || '',
@@ -155,7 +195,7 @@ export function ContentForm({
         trailer_url: f.trailer_url || '',
         external_links: links(f.external_links),
       };
-    await request({ id, data });
+    await request({ id, data }, { fields: f, content });
   });
   function field(
     name: string,
@@ -173,12 +213,14 @@ export function ContentForm({
         {options.required && ' *'}
         {options.area ? (
           <textarea
+            disabled={!hydrated}
             {...register(name, {
               required: options.required ? '入力してください' : false,
             })}
           />
         ) : (
           <input
+            disabled={!hydrated}
             type={options.type || 'text'}
             {...register(name, {
               required: options.required ? '入力してください' : false,
@@ -192,12 +234,22 @@ export function ContentForm({
   }
   return (
     <form onSubmit={submit} className="admin-form form-stack">
+      <DraftNotice draft={draft} baseUpdatedAt={baseUpdatedAt} />
       {kind === 'settings' ? (
         <section className="admin-panel form-stack">
           {field('site_name', 'サイト名', { required: true })}
           {field('description', 'サイト説明', { area: true })}
           {field('profile', 'プロフィール', { area: true })}
           {field('og_image', 'OG画像URL')}
+          <MediaPicker
+            onSelect={(url) => setValue('og_image', url, { shouldDirty: true })}
+          />
+          {field('press_guidelines', '素材・配信ガイドライン（日本語）', {
+            area: true,
+          })}
+          {field('press_guidelines_en', '素材・配信ガイドライン（英語）', {
+            area: true,
+          })}
           {field('social_links', 'SNSリンク', {
             area: true,
             hint: '1行に「GitHub | https://github.com/ユーザー名」の形式で入力',
@@ -217,8 +269,26 @@ export function ContentForm({
               area: true,
             })}
             {field('cover_url', 'カバー画像URL', {
-              hint: 'メディア管理でアップロードし、URLをコピーしてください。',
+              hint: '画像を選ぶボタンで設定できます。URLの直接入力も利用できます。',
             })}
+            <MediaPicker
+              onSelect={(url) =>
+                setValue('cover_url', url, { shouldDirty: true })
+              }
+            />
+            {kind === 'posts' && (
+              <label>
+                関連するゲーム
+                <select disabled={!hydrated} {...register('game_id')}>
+                  <option value="">スタジオ全体のお知らせ</option>
+                  {games.map((game) => (
+                    <option key={game.id} value={game.id}>
+                      {game.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
             <div className="form-grid">
               <label>
                 公開状態
@@ -276,7 +346,36 @@ export function ContentForm({
                 area: true,
                 hint: '1行につき1つの画像URL',
               })}
+              <MediaPicker
+                label="スクリーンショットを追加"
+                onSelect={(url) =>
+                  setValue(
+                    'screenshots',
+                    [getValues('screenshots'), url].filter(Boolean).join('\n'),
+                    { shouldDirty: true },
+                  )
+                }
+              />
               {field('trailer_url', 'YouTubeトレーラーURL')}
+              <label>
+                作品の主要ボタン
+                <select
+                  {...register('primary_action')}
+                  defaultValue={values.primary_action || 'auto'}
+                >
+                  <option value="auto">外部リンクから自動選択</option>
+                  <option value="wishlist">
+                    Steamでウィッシュリストに追加
+                  </option>
+                  <option value="demo">体験版を遊ぶ</option>
+                  <option value="buy">購入する</option>
+                  <option value="none">表示しない</option>
+                </select>
+              </label>
+              {field('primary_url', '主要ボタンのリンク先', {
+                type: 'url',
+                hint: 'https URL。空欄の場合はSteam・itch・体験版の外部リンクを使用します。',
+              })}
               {field('external_links', '外部リンク', {
                 area: true,
                 hint: '1行に「Steam | https://store.steampowered.com/app/...」の形式で入力',
@@ -286,7 +385,7 @@ export function ContentForm({
         </>
       )}
       <div className="admin-actions">
-        <Button disabled={pending} type="submit">
+        <Button disabled={pending || !hydrated} type="submit">
           {pending ? '保存中…' : '変更を保存'}
         </Button>
         {!!id && kind !== 'settings' && (

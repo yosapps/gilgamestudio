@@ -1,6 +1,6 @@
 import { getTranslator } from '@/lib/locale-server';
 import { messages } from '@/lib/i18n';
-import Link from 'next/link';
+import Link from '@/components/localized-link';
 import { ArrowUpRight, ArrowRight, Gem } from 'lucide-react';
 import Image from 'next/image';
 import { getSettings } from '@/lib/data';
@@ -33,6 +33,7 @@ export async function Header() {
       </Link>
       <nav aria-label={t('メインナビゲーション')}>
         <Link href="/games">{messages.navigation.games}</Link>
+        <Link href="/minigames">{messages.navigation.minigames}</Link>
         <Link href="/blog">{messages.navigation.journal}</Link>
         <Link href="/about">{messages.navigation.about}</Link>
         <Link className="nav-contact" href="/contact">
@@ -62,6 +63,12 @@ export async function Footer() {
         <p>{t(messages.footer)}</p>
       </div>
       <div className="footer-links">
+        <Link href="/press">Press Kit</Link>
+        <Link href="/feed.xml" prefetch={false}>
+          RSS
+        </Link>
+        <Link href="/discover">{messages.navigation.discoveries}</Link>
+        <Link href="/minigames">{messages.navigation.minigames}</Link>
         <Link href="/games">{messages.navigation.games}</Link>
         <Link href="/blog">{messages.navigation.journal}</Link>
         <Link href="/about">{messages.navigation.about}</Link>

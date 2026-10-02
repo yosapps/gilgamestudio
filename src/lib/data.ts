@@ -64,7 +64,10 @@ export const getSettings = unstable_cache(
   { revalidate: 60, tags: ['settings'] },
 );
 export const siteUrl = () =>
-  process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(
+    /\/+$/,
+    '',
+  );
 
 const getPostTranslations = unstable_cache(
   async (): Promise<PostTranslation[]> => {

@@ -1,8 +1,9 @@
+import { GilgameHunt } from '@/components/gilgame-hunt';
 import { getTranslator } from '@/lib/locale-server';
-import { getPosts } from '@/lib/data';
+import { getPosts, getGames } from '@/lib/data';
 import { PostCard } from '@/components/cards';
 import { ComingSoon } from '@/components/coming-soon';
-import Link from 'next/link';
+import Link from '@/components/localized-link';
 export async function generateMetadata() {
   const t = await getTranslator();
   return {
@@ -14,6 +15,7 @@ export default async function Blog({
   searchParams,
 }: {
   searchParams: Promise<{
+    game?: string;
     q?: string;
     category?: string;
     tag?: string;
@@ -23,8 +25,11 @@ export default async function Blog({
   const t = await getTranslator();
   const q = await searchParams;
   const all = await getPosts();
+  const games = await getGames();
+  const selectedGame = games.find((game) => game.slug === q.game);
   const filtered = all.filter(
     (p) =>
+      (!q.game || (!!selectedGame && p.game_id === selectedGame.id)) &&
       (!q.q ||
         `${p.title} ${p.excerpt} ${t(p.title)} ${t(p.excerpt)}`
           .toLowerCase()
@@ -46,6 +51,17 @@ export default async function Blog({
         <p>{t('ひらめきも、寄り道も。ゲームづくりの小さな足あと。')}</p>
       </div>
       <form className="filter-bar">
+        <label>
+          {t('作品')}
+          <select name="game" defaultValue={q.game || ''}>
+            <option value="">{t('すべて')}</option>
+            {games.map((game) => (
+              <option key={game.id} value={game.slug}>
+                {game.title}
+              </option>
+            ))}
+          </select>
+        </label>
         <label className="search-field">
           {t('キーワード')}
           <input name="q" placeholder={t('記事を検索…')} defaultValue={q.q} />
@@ -99,18 +115,30 @@ export default async function Blog({
           </p>
         )
       )}
+      <div className="journal-subscribe">
+        <h2>{t('冒険のつづきを受け取る')}</h2>
+        <p>{t('RSSで新しい記事をチェックできます。')}</p>
+        <Link
+          href="/feed.xml"
+          className="button button-outline"
+          prefetch={false}
+        >
+          {t('RSSを購読する')} ↗
+        </Link>
+      </div>
       <nav className="pagination" aria-label={t('ページネーション')}>
         {Array.from({ length: pages }, (_, i) => (
           <Link
             aria-current={page === i + 1 ? 'page' : undefined}
             className="button button-outline"
-            href={`/blog?${new URLSearchParams({ q: q.q || '', category: q.category || '', tag: q.tag || '', page: String(i + 1) })}`}
+            href={`/blog?${new URLSearchParams({ game: q.game || '', q: q.q || '', category: q.category || '', tag: q.tag || '', page: String(i + 1) })}`}
             key={i}
           >
             {i + 1}
           </Link>
         ))}
       </nav>
+      <GilgameHunt id="journal" />
     </div>
   );
 }

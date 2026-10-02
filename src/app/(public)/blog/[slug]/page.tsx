@@ -1,8 +1,9 @@
-import { getTranslator } from '@/lib/locale-server';
-import { getPosts, siteUrl } from '@/lib/data';
+import { alternates, localePath } from '@/lib/features';
+import { getLocale, getTranslator } from '@/lib/locale-server';
+import { getPosts, getGames, siteUrl } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/components/localized-link';
 import { RichContent } from '@/components/rich-content';
 import { PostCard } from '@/components/cards';
 import type { Metadata } from 'next';
@@ -15,10 +16,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const p = (await getPosts()).find((p) => p.slug === slug);
   if (!p) notFound();
+  const hasEnglish = (await getPosts('en')).some(
+    (item) => item.id === p.id && item.content_locale === 'en',
+  );
   return {
     title: p.seo_title || p.title,
     description: p.seo_description || p.excerpt,
-    alternates: { canonical: `/blog/${p.slug}` },
+    alternates: alternates(`/blog/${p.slug}`, await getLocale(), hasEnglish),
     openGraph: {
       type: 'article',
       title: p.title,
@@ -45,6 +49,9 @@ export default async function Article({
   const all = await getPosts();
   const p = all.find((p) => p.slug === slug);
   if (!p) notFound();
+  const game = p.game_id
+    ? (await getGames()).find((game) => game.id === p.game_id)
+    : undefined;
   const related = all
     .filter((x) => x.id !== p.id)
     .sort(
@@ -83,6 +90,15 @@ export default async function Article({
           ))}
         </div>
       </div>
+      {game && (
+        <aside className="related-game">
+          <p className="eyebrow">{t('この記事のゲーム')}</p>
+          <Link className="text-link" href={'/games/' + game.slug}>
+            {game.title} →
+          </Link>
+          <p>{game.description}</p>
+        </aside>
+      )}
       <section className="section">
         <p className="eyebrow">KEEP EXPLORING</p>
         <h2>{t('あわせて読む')}</h2>
@@ -100,7 +116,7 @@ export default async function Article({
             datePublished: p.published_at,
             dateModified: p.updated_at,
             description: p.excerpt,
-            url: `${siteUrl()}/blog/${p.slug}`,
+            url: siteUrl() + localePath(`/blog/${p.slug}`, await getLocale()),
           }).replace(/</g, '\\u003c'),
         }}
       />

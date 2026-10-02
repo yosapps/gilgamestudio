@@ -3,6 +3,155 @@ import { studioBrand } from './brand';
 
 // Japanese source copy is the key. CMS content without a translation stays original.
 export const english: Record<string, string> = {
+  星の場所: 'Star lane',
+  星: 'Star',
+  'ギルガメが主人公のミニゲームを、ブラウザで気軽に遊ぼう。':
+    'Play a little browser game starring Gilgame.',
+  'ギルガメと、気軽にひと遊び。': 'Take a little play break with Gilgame.',
+  '遊びたいゲームを選ぶと、新しいタブで開きます。':
+    'Choose a game to play in a new tab.',
+  ミニゲーム一覧: 'Mini games list',
+  ミニゲーム一覧へ: 'Back to mini games',
+  遊ぶ: 'Play',
+  ギルガメの星あつめ: 'Gilgame Star Catch',
+  '左右に動いて、落ちてくる星をキャッチ。30秒のやさしい星あつめ。':
+    'Move left and right to catch falling stars in a gentle 30-second game.',
+  星あつめ: 'Star catch',
+  '1回30秒': '30 seconds per round',
+  やさしい: 'Easy',
+  ランニング: 'Running',
+  タイミングで挑戦: 'Timing challenge',
+  左右に移動: 'Move left and right',
+  '星の下へギルガメを動かそう。画面のタップか、← → キーで移動できます。':
+    'Move Gilgame under a star. Tap the play area or use the ← → keys.',
+  星をキャッチ: 'Catch the stars',
+  '星を1つ集めると10点。取り逃しても減点はありません。':
+    'Each star is worth 10 points. Missed stars cost no points.',
+  '30秒でひと遊び': 'A 30-second play break',
+  '時間がきたらスコアをチェック。何度でも気軽に遊べます。':
+    'Check your score when time is up, and play again whenever you like.',
+  ギルガメを左に移動: 'Move Gilgame left',
+  ギルガメを中央に移動: 'Move Gilgame to the center',
+  ギルガメを右に移動: 'Move Gilgame right',
+  '星あつめ、おつかれさま！': 'Nice star collecting!',
+  'ギルガメと星を集めよう。': 'Collect stars with Gilgame.',
+  のこり時間: 'Time left',
+  秒: 's',
+  集めた星: 'Stars collected',
+  '星の下へ移動しよう！': 'Move under the star!',
+  '準備ができたら、つづけよう。': 'Resume whenever you are ready.',
+  '取り逃しても大丈夫。30秒でいくつ集められるかな？':
+    'Missing a star is okay. How many can you catch in 30 seconds?',
+  もう一度あそぶ: 'Play again',
+  星あつめをはじめる: 'Start collecting stars',
+  左: 'Left',
+  中央: 'Center',
+  右: 'Right',
+  '画面のタップ・下のボタン・← → キーで移動。P・Escで一時停止。':
+    'Tap the play area, use the buttons, or press ← → to move. P or Esc to pause.',
+  '星は1つ10点。自己ベストはこのブラウザに保存されます。':
+    'Each star is worth 10 points. Your best is saved in this browser.',
+  ミニゲーム: 'Mini games',
+  'ジャンプとしゃがみでクリスタルを避ける、ブラウザで遊べるミニゲームです。':
+    'Jump and duck past the crystals in a little game you can play right in your browser.',
+  'ひと息ついたら、ギルガメとひと走り。':
+    'Take a break and go for a little run with Gilgame.',
+  ダウンロード不要: 'No download needed',
+  'PC・スマートフォン対応': 'Play on desktop or mobile',
+  遊び方: 'How to play',
+  '地面のクリスタルを飛び越えよう。': 'Jump over the crystals on the ground.',
+  '浮かぶクリスタルは、低くなって通り抜けよう。':
+    'Duck to slip under the floating crystals.',
+  記録に挑戦: 'Beat your best',
+  '走るほどスコアアップ。自己ベストを更新しよう。':
+    'Keep running to build your score. Can you beat your best?',
+  'ギルガメと、ひと走り。': 'Ready for a little run with Gilgame?',
+  ミニゲームで遊ぶ: 'Play mini games',
+  '戻る前に、ギルガメと少し寄り道しませんか？':
+    'Before heading back, take a little detour with Gilgame.',
+  スコア: 'Score',
+  自己ベスト: 'Best',
+  ギルガメのランニングゲーム: 'Gilgame running game',
+  'スペースキー・↑キー・タップでジャンプ。↓キーでしゃがみます。':
+    'Space, ↑, or tap to jump. Hold ↓ to duck.',
+  '青いクリスタルを避けよう。P・Escで一時停止。自己ベストはこのブラウザに保存されます。':
+    'Avoid the blue crystals. P or Esc to pause. Your best is saved in this browser.',
+  'ナイスラン！もう一度、冒険へ。': 'Nice run! Ready for another adventure?',
+  'ちょっと、ひと休み。': 'A little break.',
+  '迷い道も、小さな冒険。': 'Every detour is a little adventure.',
+  避けた障害物: 'Obstacles cleared',
+  もう一度遊ぶ: 'Play again',
+  つづける: 'Resume',
+  冒険をはじめる: 'Start running',
+  ジャンプ: 'Jump',
+  しゃがむ: 'Duck',
+  一時停止: 'Pause',
+  'ゲームを遊ぶにはJavaScriptを有効にしてください。':
+    'Enable JavaScript to play the game.',
+  'このブラウザではゲームを表示できません。ホームから冒険を続けてください。':
+    'This browser cannot display the game. Continue your adventure from the homepage.',
+  お問い合わせ: 'Contact',
+  ストアページを見る: 'Visit store page',
+  この作品の開発日誌: 'Development journal for this game',
+  この作品の記事をすべて読む: 'Read all stories about this game',
+  '紹介・配信向けの素材を見る': 'Press and creator resources',
+  この記事のゲーム: 'The game in this story',
+  作品: 'Game',
+  Steamでウィッシュリストに追加: 'Wishlist on Steam',
+  体験版を遊ぶ: 'Play the demo',
+  購入する: 'Buy the game',
+  冒険のつづきを受け取る: 'Follow the next adventure',
+  'RSSで新しい記事をチェックできます。':
+    'Follow new stories with your RSS reader.',
+  RSSを購読する: 'Subscribe via RSS',
+  '紹介や取材に使えるスタジオ情報と作品素材。':
+    'Studio information and game assets for press and creators.',
+  紹介文をダウンロード: 'Download studio information',
+  取材のお問い合わせ: 'Press inquiries',
+  ロゴとキャラクター: 'Logo and character',
+  スタジオロゴ: 'Studio logo',
+  ギルガメ: 'Gilgame',
+  画像をダウンロード: 'Download image',
+  '素材・配信ガイドライン': 'Asset and streaming guidelines',
+  '素材の利用・ゲームの配信については、公式Xへお問い合わせください。':
+    'Please contact us on our official X account about asset use and streaming our games.',
+  作品ページを見る: 'Visit game page',
+  画像を開く: 'Open image',
+  ギルガメの図鑑: 'Gilgame discoveries',
+  ギルガメを見つける: 'Find Gilgame',
+  発見済みのギルガメ: 'Gilgame already found',
+  'みつけた！': 'Found you!',
+  '小さな足あと…': 'Little footsteps…',
+  'ギルガメを見つけました！': 'You found Gilgame!',
+  '発見を保存するにはブラウザの保存機能を有効にしてください。':
+    'Enable browser storage to save your discoveries.',
+  見つけたギルガメ: 'Gilgames found',
+  はじめの一歩: 'The first step',
+  '新しい冒険の入り口で見つけたギルガメ。':
+    'Gilgame, found at the beginning of a new adventure.',
+  世界をつくる: 'Creating worlds',
+  '小さなアイデアが、遊べる世界になっていく。':
+    'Little ideas grow into worlds you can play.',
+  寄り道の発見: 'A discovery along the way',
+  '制作の足あとには、新しい発見がいっぱい。':
+    'Every step of development holds new discoveries.',
+  スタジオの相棒: 'The studio companion',
+  'きらめく好奇心を持った、小さな相棒。':
+    'A little companion with sparkling curiosity.',
+  まだ見つけていないギルガメ: 'A Gilgame yet to be found',
+  'ページのどこかに、小さな足あと。':
+    'Little footsteps, somewhere on the page.',
+  もう一度訪れる: 'Visit again',
+  探しにいく: 'Go exploring',
+  '全部見つけました！ギルガメと一緒に、次の冒険へ。':
+    'You found them all! On to the next adventure with Gilgame.',
+  '図鑑はこのブラウザに保存されます。':
+    'Your discoveries are saved in this browser.',
+  図鑑をリセット: 'Reset discoveries',
+  '図鑑をリセットしました。': 'Your discoveries have been reset.',
+  '図鑑をリセットできませんでした。': 'Your discoveries could not be reset.',
+  'サイトに隠れたギルガメを探して、小さな発見を集めよう。':
+    'Find the Gilgames hidden around the site and collect little discoveries.',
   プロトタイプ: 'Prototype',
   リリース済み: 'Released',
   開発休止: 'On hold',

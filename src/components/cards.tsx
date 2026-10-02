@@ -1,6 +1,6 @@
 import { getTranslator } from '@/lib/locale-server';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/components/localized-link';
 import { ArrowUpRight } from 'lucide-react';
 import type { Game, Post } from '@/lib/types';
 export async function GameCard({

@@ -1,3 +1,4 @@
+import { GilgameHunt } from '@/components/gilgame-hunt';
 import { getTranslator } from '@/lib/locale-server';
 import { getGames } from '@/lib/data';
 import { GameCard } from '@/components/cards';
@@ -75,6 +76,7 @@ export default async function Games({
           </p>
         )
       )}
+      <GilgameHunt id="games" />
     </div>
   );
 }

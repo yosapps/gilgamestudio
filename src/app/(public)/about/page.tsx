@@ -1,3 +1,4 @@
+import { GilgameHunt } from '@/components/gilgame-hunt';
 import { getTranslator } from '@/lib/locale-server';
 import { getSettings } from '@/lib/data';
 import { ContactCTA } from '@/components/shell';
@@ -59,6 +60,9 @@ export default async function About() {
             </p>
           </div>
         </div>
+      </div>
+      <div className="gilgame-hunt-strip">
+        <GilgameHunt id="about" />
       </div>
       <ContactCTA />
     </>

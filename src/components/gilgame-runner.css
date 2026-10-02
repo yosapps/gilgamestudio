@@ -1,0 +1,210 @@
+/* Shared runner styles for the mini games page and the 404 detour. */
+.not-found-page {
+  padding-top: 56px;
+  padding-bottom: 48px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.not-found-intro {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.not-found-intro .eyebrow {
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.not-found-intro h1 {
+  font-size: clamp(26px, 4vw, 40px);
+  margin-bottom: 12px;
+}
+.not-found-intro p {
+  margin-bottom: 8px;
+}
+.gilgame-runner {
+  border: 1px solid #c8e0ee;
+  border-radius: 22px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 16px 50px #12345308;
+}
+.runner-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 28px;
+}
+.runner-heading .eyebrow {
+  font-size: 9px;
+  margin-bottom: 4px;
+  letter-spacing: 0.2em;
+}
+.runner-heading h2 {
+  font-size: 22px;
+  margin: 0;
+  letter-spacing: 0.06em;
+}
+.runner-scores {
+  display: flex;
+  gap: 26px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.runner-scores span {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.4;
+}
+.runner-scores output {
+  display: block;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.runner-scores > div:last-child output {
+  color: #9a6c10;
+}
+.runner-stage {
+  position: relative;
+  background: #e4f5ff;
+}
+.runner-stage canvas {
+  display: block;
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  height: 260px;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+.runner-stage canvas:focus-visible {
+  outline: 3px solid #0875ce;
+  outline-offset: -3px;
+}
+.runner-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 30px 16px 0;
+  gap: 10px;
+  pointer-events: none;
+}
+.runner-overlay > p {
+  margin: 0;
+  font-weight: 700;
+  font-size: 17px;
+  text-align: center;
+  color: #123453;
+}
+.runner-overlay > .runner-result {
+  font-size: 12px;
+  color: #55728a;
+}
+.runner-overlay > button {
+  pointer-events: auto;
+  min-height: 44px;
+  padding: 9px 18px;
+  gap: 10px;
+}
+.runner-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 20px 10px;
+}
+.runner-controls .button {
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 16px;
+}
+.runner-duck {
+  touch-action: none;
+  user-select: none;
+}
+.runner-duck[aria-pressed='true'] {
+  background: #dff1ff;
+  border-color: #0875ce;
+}
+.gilgame-runner button:disabled {
+  cursor: default;
+}
+.runner-instructions {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.8;
+  padding: 0 20px 20px;
+  margin: 0;
+}
+.gilgame-runner > p:not(.runner-instructions),
+.gilgame-runner > noscript p {
+  text-align: center;
+  padding: 0 20px;
+}
+.not-found-links {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28px;
+}
+@media (max-width: 600px) {
+  .not-found-page {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+  .not-found-intro {
+    margin-bottom: 24px;
+  }
+  .not-found-intro > p {
+    font-size: 12px;
+  }
+  .runner-heading {
+    padding: 18px 16px;
+    gap: 8px;
+  }
+  .runner-heading h2 {
+    font-size: 17px;
+  }
+  .runner-heading .eyebrow {
+    font-size: 8px;
+  }
+  .runner-scores {
+    gap: 14px;
+  }
+  .runner-scores output {
+    font-size: 17px;
+  }
+  .runner-scores span {
+    font-size: 9px;
+  }
+  .runner-controls {
+    gap: 8px;
+    padding: 14px 10px 10px;
+  }
+  .runner-controls .button {
+    font-size: 12px;
+    padding: 8px 12px;
+    gap: 4px;
+  }
+  .runner-controls .button svg {
+    width: 14px;
+  }
+  .runner-instructions {
+    padding: 0 14px 16px;
+    font-size: 10px;
+  }
+  .runner-overlay > p {
+    font-size: 15px;
+  }
+  .not-found-links {
+    flex-direction: column;
+    gap: 16px;
+  }
+}

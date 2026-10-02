@@ -1,8 +1,12 @@
 'use client';
+import { useHydrated } from './use-hydrated';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import { useFormDraft, DraftNotice } from './use-form-draft';
+import { translationNeedsReview } from '@/lib/features';
+import { RichContent } from './rich-content';
 import { Button } from './ui/button';
 import type {
   Game,
@@ -27,11 +31,14 @@ export function TranslationForm({
   kind,
   parent,
   initial,
+  draftScope,
 }: {
   kind: 'posts' | 'games';
   parent: Post | Game;
   initial?: PostTranslation | GameTranslation;
+  draftScope: string;
 }) {
+  const hydrated = useHydrated();
   const defaults: Fields = {
     publication: initial?.is_published ? 'published' : 'draft',
   };
@@ -45,6 +52,8 @@ export function TranslationForm({
   }
   const {
     register,
+    control,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<Fields>({ defaultValues: defaults });
@@ -57,12 +66,24 @@ export function TranslationForm({
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+  const watched = useWatch({ control }) as Fields;
+  const draft = useFormDraft(
+    'gilgame:draft:' + draftScope + ':' + kind + ':' + parent.id + ':en',
+    { fields: watched, content },
+    String(parent.source_revision ?? 1),
+    (data) => {
+      reset(data.fields);
+      setContent(data.content);
+    },
+  );
   const submit = handleSubmit(async (values) => {
+    const submittedAt = draft.beginSave();
     setPending(true);
     setMessage('');
     setSuccess(false);
     const common = {
       locale: 'en',
+      source_revision: parent.source_revision ?? 1,
       title: values.title || '',
       tags: list(values.tags),
       is_published: values.publication === 'published',
@@ -102,6 +123,7 @@ export function TranslationForm({
       const result = await response.json();
       if (!response.ok)
         throw new Error(result.error || '英語版を保存できませんでした。');
+      draft.markSaved({ fields: values, content }, submittedAt);
       setSuccess(true);
       setMessage('英語版を保存しました。');
       router.refresh();
@@ -120,6 +142,7 @@ export function TranslationForm({
         {required && ' *'}
         {area ? (
           <textarea
+            disabled={!hydrated}
             lang="en"
             {...register(name, {
               required: required ? '入力してください' : false,
@@ -127,6 +150,7 @@ export function TranslationForm({
           />
         ) : (
           <input
+            disabled={!hydrated}
             lang="en"
             {...register(name, {
               required: required ? '入力してください' : false,
@@ -141,12 +165,41 @@ export function TranslationForm({
   }
   return (
     <form className="admin-form form-stack" onSubmit={submit}>
+      <DraftNotice
+        draft={draft}
+        baseUpdatedAt={String(parent.source_revision ?? 1)}
+        saveLabel="英語版を保存"
+      />
+      {translationNeedsReview(parent, initial) && (
+        <p role="status" className="notice">
+          原文が更新されています。英語版を見直して保存すると「要確認」が解除されます。
+        </p>
+      )}
+      <details className="admin-panel source-reference">
+        <summary>日本語の原文を見ながら編集する</summary>
+        <div className="prose" lang="ja">
+          <h2>{parent.title}</h2>
+          <p>
+            {kind === 'posts'
+              ? (parent as Post).excerpt
+              : (parent as Game).description}
+          </p>
+          {kind === 'posts' ? (
+            <RichContent node={(parent as Post).content} />
+          ) : (
+            <p style={{ whiteSpace: 'pre-wrap' }}>{(parent as Game).body}</p>
+          )}
+          <p>{parent.tags.join(' / ')}</p>
+        </div>
+      </details>
       <section className="admin-panel form-stack">
         <h2>English version</h2>
         <p className="muted">
           元のコンテンツ：{parent.title}
           <br />
-          URL・画像・公開日時・開発状況は日本語版と共通です。英語版が下書き・未登録の場合は、日本語の原文を表示します。
+          スラッグ・画像・公開日時・開発状況は日本語版と共通です。英語版のURLには
+          /en
+          が付きます。英語版が下書き・未登録の場合は、日本語の原文を表示します。
         </p>
         {field('title', 'タイトル（英語）', false, true)}
         {field(
@@ -156,7 +209,7 @@ export function TranslationForm({
         )}
         <label>
           英語版の公開設定
-          <select {...register('publication')}>
+          <select disabled={!hydrated} {...register('publication')}>
             <option value="draft">下書き</option>
             <option value="published">公開</option>
           </select>
@@ -202,7 +255,7 @@ export function TranslationForm({
         )}
       </section>
       <div className="admin-actions">
-        <Button type="submit" disabled={pending}>
+        <Button type="submit" disabled={pending || !hydrated}>
           {pending ? '保存中…' : '英語版を保存'}
         </Button>
         {message && (

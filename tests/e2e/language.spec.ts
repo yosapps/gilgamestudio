@@ -24,7 +24,7 @@ test('browser language, manual selection, persistence and translated public page
   });
 
   for (const path of ['/games', '/blog', '/about', '/contact']) {
-    await page.goto(path);
+    await page.goto('/en' + path);
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     // CMS text without a published translation intentionally stays original.
     const copy = await page.locator('.page-intro').innerText();
@@ -39,7 +39,7 @@ test('browser language, manual selection, persistence and translated public page
       fullPage: true,
     });
   }
-  await page.goto('/blog?q=hello');
+  await page.goto('/en/blog?q=hello');
   await page.getByRole('button', { name: '日本語', exact: true }).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'ja');
   await expect(page).toHaveURL(/\/blog\?q=hello$/);
@@ -70,14 +70,14 @@ test('browser language, manual selection, persistence and translated public page
 });
 
 test('English launch article is served from CMS', async ({ page }) => {
-  await page.goto('/blog/official-website-launch');
+  await page.goto('/en/blog/official-website-launch');
   await expect(page.locator('h1')).toContainText(
     'Welcome to the official Gilgame studio website',
   );
   expect(await page.locator('main').innerText()).not.toMatch(
     /[\u3040-\u30ff\u3400-\u9fff]/,
   );
-  await page.goto('/blog');
+  await page.goto('/en/blog');
   await page.getByLabel('Keyword').fill('Welcome');
   await page.getByRole('button', { name: 'Search', exact: true }).click();
   await expect(page.locator('.post-row')).toHaveCount(1);

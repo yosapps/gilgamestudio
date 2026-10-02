@@ -1,3 +1,5 @@
+import { headers } from 'next/headers';
+import { alternates, localePath } from '@/lib/features';
 import { getLocale, getTranslator } from '@/lib/locale-server';
 import type { Metadata } from 'next';
 import '@fontsource-variable/space-grotesk';
@@ -13,6 +15,15 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslator();
   const s = await getSettings();
   return {
+    alternates: {
+      ...alternates(
+        (await headers()).get('x-gilgame-pathname') || '/',
+        await getLocale(),
+      ),
+      types: {
+        'application/rss+xml': localePath('/feed.xml', await getLocale()),
+      },
+    },
     metadataBase: new URL(siteUrl()),
     title: {
       default: `${s.site_name} — Independent Game Developer`,

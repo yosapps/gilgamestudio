@@ -4,6 +4,8 @@ export const dictionaries = {
   ja: {
     navigation: {
       games: 'Games',
+      minigames: 'Mini games',
+      discoveries: 'Gilgame discoveries',
       journal: 'Journal',
       about: 'About',
       contact: 'Contact',

@@ -16,7 +16,7 @@ export const imageUrl = z
   .refine(
     (v) =>
       !v ||
-      ['/gilgame.png', '/logo.png'].includes(v) ||
+      ['/gilgame.png', '/gilgame-sit.png', '/logo.png'].includes(v) ||
       /^\/art\/[a-zA-Z0-9_.-]+$/.test(v) ||
       (() => {
         try {
@@ -110,7 +110,7 @@ function validRichNode(value: unknown, depth = 0): boolean {
     return false;
   return true;
 }
-const richDocument = z
+export const richDocument = z
   .object({ type: z.literal('doc'), content: z.array(z.unknown()).optional() })
   .refine(
     (v) => JSON.stringify(v).length <= 300000 && validRichNode(v),
@@ -118,6 +118,7 @@ const richDocument = z
   );
 export const postSchema = z
   .object({
+    game_id: z.uuid().nullable().optional(),
     title: z.string().trim().min(1).max(200),
     slug,
     excerpt: z.string().max(500),
@@ -136,6 +137,10 @@ export const postSchema = z
     { message: '公開日時を指定してください', path: ['published_at'] },
   );
 export const gameSchema = z.object({
+  primary_action: z
+    .enum(['auto', 'wishlist', 'demo', 'buy', 'none'])
+    .optional(),
+  primary_url: safeUrl.optional(),
   title: z.string().trim().min(1).max(200),
   slug,
   description: z.string().max(500),
@@ -161,6 +166,8 @@ export const gameSchema = z.object({
   external_links: links,
 });
 export const settingsSchema = z.object({
+  press_guidelines: z.string().max(5000).optional(),
+  press_guidelines_en: z.string().max(5000).optional(),
   site_name: z.string().trim().min(1).max(100),
   description: z.string().max(500),
   profile: z.string().max(5000),
@@ -168,6 +175,7 @@ export const settingsSchema = z.object({
   social_links: links,
 });
 export const postTranslationSchema = z.object({
+  source_revision: z.number().int().positive().optional(),
   locale: z.literal('en'),
   title: z.string().trim().min(1).max(200),
   excerpt: z.string().max(500),
@@ -179,6 +187,7 @@ export const postTranslationSchema = z.object({
   is_published: z.boolean(),
 });
 export const gameTranslationSchema = z.object({
+  source_revision: z.number().int().positive().optional(),
   locale: z.literal('en'),
   title: z.string().trim().min(1).max(200),
   description: z.string().max(500),

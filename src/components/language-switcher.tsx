@@ -1,10 +1,13 @@
 'use client';
+import { useHydrated } from './use-hydrated';
 import { useState } from 'react';
+import { localePath } from '@/lib/features';
 import { localeCookie, type Locale } from '@/lib/locale';
 import { useLocale } from './language-provider';
 
 export function LanguageSwitcher() {
   const locale = useLocale();
+  const hydrated = useHydrated();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(false);
   function select(next: Locale) {
@@ -14,10 +17,14 @@ export function LanguageSwitcher() {
       .split('; ')
       .some((entry) => entry === `${localeCookie}=${next}`);
     setError(!saved);
-    if (saved) {
+    {
       setPending(true);
-      // Refresh the document and prefetched routes together after changing language.
-      window.location.reload();
+      // The URL selects the language even when cookies are unavailable.
+      window.location.assign(
+        localePath(window.location.pathname, next) +
+          window.location.search +
+          window.location.hash,
+      );
     }
   }
   return (
@@ -32,7 +39,7 @@ export function LanguageSwitcher() {
           type="button"
           lang="ja"
           aria-pressed={locale === 'ja'}
-          disabled={pending}
+          disabled={pending || !hydrated}
           onClick={() => select('ja')}
         >
           日本語
@@ -42,7 +49,7 @@ export function LanguageSwitcher() {
           lang="en"
           aria-label="English"
           aria-pressed={locale === 'en'}
-          disabled={pending}
+          disabled={pending || !hydrated}
           onClick={() => select('en')}
         >
           EN

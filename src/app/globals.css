@@ -152,6 +152,10 @@ svg {
   font-size: 14px;
 }
 .site-header nav a {
+  white-space: nowrap;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
   transition: color 0.2s;
 }
 .site-header nav a:hover {
@@ -2642,6 +2646,9 @@ html[lang='en'] .about-preview h2 {
   }
 }
 @media (max-width: 480px) {
+  .site-header nav {
+    gap: 8px;
+  }
   .site-header .brand {
     font-size: 16px;
     gap: 6px;
@@ -2688,4 +2695,346 @@ html[lang='en'] .about-preview h2 {
 .editor-language-bar span {
   margin-left: 10px;
   font-size: 11px;
+}
+
+/* Studio tools and little discoveries. */
+.game-primary-action {
+  max-width: 100%;
+  text-align: center;
+}
+.related-game,
+.journal-subscribe {
+  margin: 36px 0;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+}
+.related-game h2,
+.journal-subscribe h2 {
+  font-size: 26px;
+}
+.press-section {
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 150px;
+}
+.press-section > .button {
+  margin: 12px 20px 12px 0;
+}
+.press-assets {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+}
+.press-assets article {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: white;
+}
+.press-assets img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  border-radius: 12px;
+  margin-bottom: 18px;
+}
+.press-assets h3 {
+  font-size: 20px;
+}
+.press-assets .button {
+  width: 100%;
+  padding-inline: 12px;
+}
+.press-facts {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 8px 20px;
+}
+.press-facts dd {
+  margin: 0;
+}
+.guidelines {
+  white-space: pre-wrap;
+}
+.about-preview:has(+ .gilgame-hunt-strip) {
+  padding-bottom: 24px;
+}
+.about-page:has(+ .gilgame-hunt-strip),
+.about-page:has(+ .gilgame-hunt-strip) .detail-columns {
+  padding-bottom: 0;
+}
+.gilgame-hunt-strip {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 8px 7%;
+}
+.gilgame-hunt-strip .gilgame-hunt {
+  margin: 0;
+}
+.gilgame-hunt {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: 12px 0;
+}
+.gilgame-hunt > p {
+  margin: 0;
+  font-size: 12px;
+}
+.gilgame-hunt > .text-link {
+  font-size: 12px;
+}
+.hunt-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 4px 10px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 12px;
+}
+.hunt-button img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+.hunt-button:disabled {
+  cursor: default;
+  opacity: 1;
+  color: var(--purple);
+  border-style: solid;
+}
+.discovery-progress {
+  font-size: 20px;
+  font-weight: 700;
+}
+.discovery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin: 28px 0;
+}
+.discovery-card {
+  padding: 32px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: white;
+  min-width: 0;
+}
+.discovery-card > div {
+  height: 180px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+}
+.discovery-card img {
+  object-fit: contain;
+}
+.discovery-card h2 {
+  font-size: 24px;
+}
+.discovery-question {
+  display: grid;
+  place-items: center;
+  width: 120px;
+  height: 120px;
+  background: var(--surface);
+  border-radius: 50%;
+  color: var(--muted);
+  font-size: 52px;
+}
+.discovery-card.locked {
+  background: #f4faff;
+}
+.draft-status .muted {
+  margin-bottom: 12px;
+}
+.draft-status .notice {
+  margin-bottom: 16px;
+}
+.editor-media {
+  padding: 12px 0;
+}
+.media-picker {
+  width: min(850px, calc(100vw - 40px));
+  max-height: calc(100dvh - 60px);
+  margin: auto;
+  padding: 28px;
+  border: 1px solid #36536d;
+  border-radius: 20px;
+  color: #e1edf7;
+  background: #10253a;
+  overflow-y: auto;
+  box-shadow: 0 24px 80px #0007;
+}
+.media-picker::backdrop {
+  background: #07172ab3;
+}
+.picker-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+.picker-heading h2 {
+  font-size: 24px;
+  margin: 0;
+}
+.media-picker label {
+  display: block;
+  margin-bottom: 18px;
+}
+.media-picker input {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border: 1px solid #36536d;
+  border-radius: 10px;
+  color: #e1edf7;
+  background: #071c30;
+}
+.picker-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+}
+.picker-grid button {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #36536d;
+  border-radius: 12px;
+  background: #0c1e32;
+  color: #e1edf7;
+  text-align: left;
+}
+.picker-grid img {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+.picker-grid span {
+  display: block;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.picker-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+}
+.picker-pagination button {
+  padding: 8px 16px;
+  border: 1px solid #36536d;
+  border-radius: 10px;
+}
+.source-reference > summary {
+  cursor: pointer;
+  color: #72d4ff;
+  margin-bottom: 12px;
+}
+.source-reference .prose h2 {
+  font-size: 24px;
+}
+.admin-form:has(.source-reference[open]) {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 24px;
+  align-items: start;
+}
+.admin-form:has(.source-reference[open]) > .draft-status,
+.admin-form:has(.source-reference[open]) > .notice {
+  grid-column: 1 / -1;
+}
+.admin-form:has(.source-reference[open]) > .source-reference {
+  grid-column: 1;
+  grid-row: 3 / span 5;
+  position: sticky;
+  top: 20px;
+  max-height: calc(100dvh - 40px);
+  overflow: auto;
+}
+.admin-form:has(.source-reference[open]) > section,
+.admin-form:has(.source-reference[open]) > .admin-actions {
+  grid-column: 2;
+}
+@media (max-width: 1000px) {
+  .admin-form:has(.source-reference[open]) {
+    display: flex;
+    flex-direction: column;
+  }
+  .admin-form:has(.source-reference[open]) > * {
+    width: 100%;
+  }
+  .admin-form:has(.source-reference[open]) > .source-reference {
+    position: static;
+    max-height: 450px;
+  }
+}
+@media (max-width: 760px) {
+  .gilgame-hunt-strip {
+    padding-inline: 6%;
+  }
+  .press-assets {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .press-assets img {
+    height: 160px;
+  }
+  .discovery-card {
+    padding: 22px;
+  }
+  .discovery-card h2 {
+    font-size: 20px;
+  }
+  .media-picker {
+    padding: 20px;
+  }
+  .picker-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .picker-heading h2 {
+    font-size: 19px;
+  }
+}
+@media (max-width: 480px) {
+  .press-assets,
+  .discovery-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .press-assets img {
+    height: 220px;
+  }
+  .journal-subscribe {
+    padding: 22px;
+  }
+  .gilgame-hunt {
+    justify-content: flex-start;
+  }
+  .media-picker {
+    width: calc(100vw - 20px);
+    padding: 16px;
+  }
+  .picker-grid img {
+    height: 100px;
+  }
+}
+
+.admin-form:has(.source-reference) > .admin-actions {
+  position: static;
 }

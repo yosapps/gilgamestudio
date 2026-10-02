@@ -131,18 +131,28 @@ export async function DELETE(req: Request) {
       { error: '画像が見つかりません' },
       { status: 404 },
     );
-  const [posts, games, settings] = await Promise.all([
+  const [posts, games, settings, translations] = await Promise.all([
     db.from('posts').select('cover_url,content'),
     db.from('games').select('cover_url,screenshots'),
     db.from('site_settings').select('og_image'),
+    db.from('post_translations').select('content'),
   ]);
-  if ([posts, games, settings].some((x) => x.error))
+  if (
+    [posts, games, settings].some((x) => x.error) ||
+    (translations.error &&
+      !['PGRST205', '42P01'].includes(translations.error.code))
+  )
     return NextResponse.json(
       { error: '使用状況を確認できませんでした' },
       { status: 500 },
     );
   if (
-    JSON.stringify([posts.data, games.data, settings.data]).includes(media.url)
+    JSON.stringify([
+      posts.data,
+      games.data,
+      settings.data,
+      translations.data,
+    ]).includes(media.url)
   )
     return NextResponse.json(
       {

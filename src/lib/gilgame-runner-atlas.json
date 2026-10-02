@@ -1,0 +1,157 @@
+{
+  "source": "/game/gilgame-runner-sheet.png",
+  "width": 1774,
+  "height": 887,
+  "clips": {
+    "run": [
+      {
+        "x": 72,
+        "y": 23,
+        "width": 205,
+        "height": 270,
+        "pivotX": 102.5,
+        "pivotY": 266
+      },
+      {
+        "x": 359,
+        "y": 20,
+        "width": 206,
+        "height": 273,
+        "pivotX": 103,
+        "pivotY": 269
+      },
+      {
+        "x": 643,
+        "y": 22,
+        "width": 201,
+        "height": 271,
+        "pivotX": 100.5,
+        "pivotY": 267
+      },
+      {
+        "x": 928,
+        "y": 17,
+        "width": 206,
+        "height": 276,
+        "pivotX": 103,
+        "pivotY": 272
+      },
+      {
+        "x": 1223,
+        "y": 22,
+        "width": 205,
+        "height": 271,
+        "pivotX": 102.5,
+        "pivotY": 267
+      },
+      {
+        "x": 1511,
+        "y": 19,
+        "width": 204,
+        "height": 274,
+        "pivotX": 102,
+        "pivotY": 270
+      }
+    ],
+    "jump": [
+      {
+        "x": 59,
+        "y": 375,
+        "width": 233,
+        "height": 242,
+        "pivotX": 116.5,
+        "pivotY": 238
+      },
+      {
+        "x": 351,
+        "y": 311,
+        "width": 210,
+        "height": 297,
+        "pivotX": 105,
+        "pivotY": 293
+      },
+      {
+        "x": 642,
+        "y": 311,
+        "width": 209,
+        "height": 270,
+        "pivotX": 104.5,
+        "pivotY": 266
+      },
+      {
+        "x": 932,
+        "y": 304,
+        "width": 209,
+        "height": 266,
+        "pivotX": 104.5,
+        "pivotY": 262
+      },
+      {
+        "x": 1223,
+        "y": 335,
+        "width": 209,
+        "height": 281,
+        "pivotX": 104.5,
+        "pivotY": 277
+      },
+      {
+        "x": 1516,
+        "y": 372,
+        "width": 221,
+        "height": 245,
+        "pivotX": 110.5,
+        "pivotY": 241
+      }
+    ],
+    "duck": [
+      {
+        "x": 41,
+        "y": 658,
+        "width": 259,
+        "height": 209,
+        "pivotX": 129.5,
+        "pivotY": 205
+      },
+      {
+        "x": 349,
+        "y": 658,
+        "width": 237,
+        "height": 209,
+        "pivotX": 118.5,
+        "pivotY": 205
+      },
+      {
+        "x": 640,
+        "y": 658,
+        "width": 232,
+        "height": 210,
+        "pivotX": 116,
+        "pivotY": 206
+      },
+      {
+        "x": 919,
+        "y": 657,
+        "width": 244,
+        "height": 210,
+        "pivotX": 122,
+        "pivotY": 206
+      },
+      {
+        "x": 1221,
+        "y": 658,
+        "width": 233,
+        "height": 210,
+        "pivotX": 116.5,
+        "pivotY": 206
+      },
+      {
+        "x": 1506,
+        "y": 658,
+        "width": 237,
+        "height": 209,
+        "pivotX": 118.5,
+        "pivotY": 205
+      }
+    ]
+  }
+}

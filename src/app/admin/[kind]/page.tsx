@@ -11,7 +11,7 @@ export default async function Manage({
 }) {
   const { kind } = await params;
   if (!['posts', 'games', 'media', 'settings'].includes(kind)) notFound();
-  const { db } = await requireAdmin();
+  const { db, user } = await requireAdmin();
   if (kind === 'settings') {
     const { data, error } = await db
       .from('site_settings')
@@ -24,7 +24,11 @@ export default async function Manage({
         <div className="admin-heading">
           <h1>サイト設定</h1>
         </div>
-        <ContentForm kind="settings" initial={data as Settings} />
+        <ContentForm
+          kind="settings"
+          initial={data as Settings}
+          draftScope={user.id}
+        />
       </>
     );
   }

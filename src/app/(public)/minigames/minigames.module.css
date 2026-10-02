@@ -1,0 +1,272 @@
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin-bottom: 24px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.features span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.listNotice {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.gameList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+.gameList li {
+  min-width: 0;
+}
+.card {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: white;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.card:hover {
+  border-color: #87bedc;
+  box-shadow: 0 12px 32px #1234530d;
+}
+.card:focus-visible {
+  outline: 3px solid #0875ce;
+  outline-offset: 5px;
+}
+.preview {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+.starPreview {
+  background:
+    radial-gradient(ellipse at 75% 20%, #fff8da, transparent 50%),
+    linear-gradient(140deg, #e9edff, #e1f4ff);
+}
+.runPreview {
+  background: linear-gradient(#e4f5ff 70%, #e9f0dc 70%, #f3e2b7 90%);
+}
+.previewLabel {
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  font-family: var(--font-display);
+  color: #416a85;
+  letter-spacing: 0.16em;
+  font-size: 14px;
+  font-weight: 700;
+}
+.character {
+  position: absolute;
+  height: 230px;
+  width: 230px;
+  object-fit: contain;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.previewStar,
+.smallStar {
+  position: absolute;
+  color: #bb8115;
+  fill: #ffd86b;
+  stroke-width: 1.5px;
+}
+.previewStar {
+  left: 72%;
+  top: 66px;
+  transform: rotate(12deg);
+}
+.smallStar {
+  left: 22%;
+  top: 106px;
+  transform: rotate(-18deg);
+}
+.crystal,
+.smallCrystal {
+  position: absolute;
+  width: 27px;
+  height: 43px;
+  background: #3fa8de;
+  border: 2px solid #127bb8;
+  clip-path: polygon(50% 0, 100% 38%, 75% 100%, 25% 100%, 0 38%);
+  right: 18%;
+  bottom: 23px;
+}
+.smallCrystal {
+  width: 20px;
+  height: 32px;
+  right: auto;
+  left: 16%;
+  bottom: 57px;
+  background: #8bd1ef;
+}
+.cardBody {
+  padding: 26px 28px 28px;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.tags span {
+  font-size: 14px;
+  color: #416a85;
+  background: #edf7fb;
+  border-radius: 8px;
+  padding: 4px 9px;
+}
+.starPreview + .cardBody .tags span:last-child {
+  color: #8a641d;
+  background: #fff7df;
+}
+.card h2 {
+  font-size: clamp(20px, 2.5vw, 26px);
+  margin: 0 0 14px;
+}
+.cardBody > p {
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.9;
+}
+.cardAction {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: var(--purple);
+  font-weight: 700;
+}
+.newTab {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-left: auto;
+}
+.detail {
+  max-width: 1080px;
+}
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.detailIntro {
+  margin-bottom: 28px;
+}
+.detailIntro .eyebrow {
+  margin-bottom: 12px;
+}
+.detailIntro h1 {
+  font-size: clamp(25px, 4vw, 40px);
+  margin: 0 0 12px;
+}
+.detailIntro > p:last-child {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.9;
+  margin: 0;
+}
+.guide {
+  margin-top: 40px;
+}
+.guide > h2 {
+  font-size: 24px;
+  margin: 0 0 24px;
+}
+.tips {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 24px 20px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: white;
+}
+.icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--purple);
+  font-size: 14px;
+  font-weight: 700;
+}
+.tip h3 {
+  font-size: 16px;
+  margin: 0 0 10px;
+}
+.tip p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--muted);
+}
+@media (max-width: 760px) {
+  .gameList,
+  .tips {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .preview {
+    height: 200px;
+  }
+  .previewLabel {
+    top: 18px;
+    left: 20px;
+  }
+  .character {
+    width: 200px;
+    height: 200px;
+    bottom: -20px;
+  }
+  .cardBody {
+    padding: 24px 20px;
+  }
+  .newTab {
+    width: 100%;
+    margin-left: 0;
+  }
+  .features {
+    gap: 8px 14px;
+  }
+  .detailIntro {
+    margin-bottom: 22px;
+  }
+  .tip {
+    padding: 22px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}

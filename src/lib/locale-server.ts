@@ -6,6 +6,8 @@ import { translator } from './translations';
 
 export const getLocale = cache(async () => {
   const [jar, requestHeaders] = await Promise.all([cookies(), headers()]);
+  const explicit = requestHeaders.get('x-gilgame-locale');
+  if (explicit === 'ja' || explicit === 'en') return explicit;
   return resolveLocale(
     jar.get(localeCookie)?.value,
     requestHeaders.get('accept-language') || '',
